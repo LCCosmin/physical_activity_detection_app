@@ -27,6 +27,14 @@ share/python-wheels/
 *.egg
 MANIFEST
 
+# Project Specifics
+final_training_data/
+training data/
+rev/
+renamed-files/
+backup/
+training_data_picture_model_cnn/
+
 # PyInstaller
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
