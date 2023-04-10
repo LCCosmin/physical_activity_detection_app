@@ -6,9 +6,9 @@ class TrainingDataGeneratorANN:
     def __init__(
         self, 
         vid, 
-        detection_confidence, 
-        tracking_confidence, 
-        complexity
+        detection_confidence = 0.3, 
+        tracking_confidence = 0.3, 
+        complexity = 1
     ) -> None:
         self.__vid = vid
         self.__detection_confidence = detection_confidence
@@ -38,7 +38,11 @@ class TrainingDataGeneratorANN:
             min_tracking_confidence=self.__tracking_confidence,
             model_complexity=self.__complexity,
             smooth_landmarks = True ) as pose:
-            self.__vid = cv2.VideoCapture("./training data/" + self.__vid)
+            
+            if type(self.__vid) is str:
+                self.__vid = cv2.VideoCapture("./training data/" + self.__vid)
+            else:
+                self.__vid = cv2.VideoCapture(self.__vid)
             
             while self.__vid.isOpened():
                 success, image = self.__vid.read()
@@ -141,7 +145,7 @@ class TrainingDataGeneratorANN:
                         right_arm_motion,
                         ))
                 except:
-                    print("bad smth")
+                    #print("bad smth")
                     pass
                     # TODO: figure out what here
                 
@@ -157,18 +161,3 @@ class TrainingDataGeneratorANN:
         self.__vid.release()
         cv2.destroyAllWindows()
         return final_values_vector
-
-
-    def refactor_data(self):
-        generated_data = self.generate_vector_data()
-
-        refactored_data = (
-            [item[0] for item in generated_data],  # left_arm_angle
-            [item[1] for item in generated_data],  # right_arm_angle
-            [item[2] for item in generated_data],  # left_leg_angle
-            [item[3] for item in generated_data],  # right_leg_angle
-            [item[4] for item in generated_data],  # left_arm_motion
-            [item[5] for item in generated_data],  # right_arm_motion
-        )
-        
-        return refactored_data

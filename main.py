@@ -4,19 +4,14 @@ from utils.decorators import benchmark
 import cv2
 import os
 
-@benchmark
+
 def main():
     controller = ControllerClass(0.3, 0.3, 1)
     
-    training_data_ann = controller.gather_data_for_ann()
-    print(len(training_data_ann))
-    print(len(training_data_ann[0]))
-    print(len(training_data_ann[1]))
-    print(len(training_data_ann[2]))
-    print(len(training_data_ann[3]))
-    print(len(training_data_ann[4]))
-    print(len(training_data_ann[5]))
-
+    x, y = controller.gather_data_for_ann()
+    #print(y)
+    #pass
+    
     
 def reverse_videos():
     total_files = len([f for f in os.listdir("C:\\Users\\Cosmin\\Desktop\\licenta\\training data") if f.endswith("mp4")])
