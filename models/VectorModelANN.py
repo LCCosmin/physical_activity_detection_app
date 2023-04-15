@@ -1,26 +1,30 @@
 from dataclasses import dataclass, field
+from typing import Any
 from sklearn.model_selection import train_test_split
 import tensorflow as tf
 from tensorflow import keras
 import numpy as np
-import cv2
-import os
-import matplotlib.pyplot as plt
+from utils.constants import ANN_SIZE
+from utils.utils import plot_graph
 
 
 @dataclass(kw_only=True)
 class VectorModelANN:
-    _vector_size: int = 6
+    _vector_size: int = ANN_SIZE * 6
     _epochs_no: int = 256
     _batch_size: int = 32
     _checkpoint_path: str = field(init=False)
     _training_folder: str = field(init=False)
+    __model: tf.keras.models.Sequential = field(init=False)
+
 
     def __post_init__(self) -> None:
         self._training_folder = "./training_data_vector_model_cnn"
         self._checkpoint_path = "./brains/vector_model_cnn/cp.ckpt"
+        self.__model = self.create_model()
 
-    def create_model(self):
+
+    def create_model(self) -> tf.keras.models.Sequential:
         model = tf.keras.models.Sequential([
             keras.layers.InputLayer(input_shape=(self._vector_size)),
             keras.layers.Dense(400, activation = 'relu', kernel_regularizer=tf.keras.regularizers.l2(0.001)),
@@ -41,47 +45,34 @@ class VectorModelANN:
 
         return model
 
-    def train_and_save(self, x_training_data, y_training_data) -> None:
-        #Get the training data
+
+    def save_model(self) -> None:
+        self.__model.save_weights(self._checkpoint_path)
+
+
+    def train_model(self, x_training_data: list, y_training_data: list) -> None:
         print("INFO:VECTOR_MODEL_ANN: Starting the training protocol ...")
 
         x_data = np.array(x_training_data)
         y_data = np.array(y_training_data)
 
-        x_train, x_test, y_train, y_test = train_test_split(x_data, y_data, 
-                                                            test_size = 0.2, shuffle=(True))
+        x_train, x_test, y_train, y_test =(
+            train_test_split(
+                x_data, y_data, 
+                test_size = 0.2,
+                shuffle=(True)
+            )
+        )
 
-        model = self.create_model()
+        history = self.__model.fit(x_train, y_train, epochs = self._epochs_no, batch_size = self._batch_size)
 
-        history = model.fit(x_train, y_train, epochs = self._epochs_no, batch_size = self._batch_size)
-        model.save_weights(self._checkpoint_path)
+        _, accuracy = self.__model.evaluate(x_test, y_test, verbose=2)
 
-        loss, accuracy = model.evaluate(x_test, y_test, verbose=2)
-
-        print(model.predict(x_test)[0])
-
-        plt.plot(history.history['loss'])
-        plt.show(block=True)
-        plt.savefig("./ann_loss.png")
-
-        print("INFO:VECTOR_MODEL_ANN: Accuracy : " + str(accuracy))
-
+        print(f"INFO:SHOWING RESULTS OF THE TRAINING: {self.__model.predict(x_test)[0]}")
+        print(f"INFO:VECTOR_MODEL_ANN: Accuracy : {accuracy}")
         print("INFO:VECTOR_MODEL_ANN: Training done ..")
+        # plot_graph(history)
+
 
     def evaluate_video(self, video) -> None:
-        model = self.create_model()
-        model.load_weights(self._checkpoint_path).expect_partial()
-
-        # n = 1
-
-        # for person in people_list:
-        #     copy_image = person
-        #     person = self.normalize(person)
-        #     person = np.array(cv2.resize(person, (self._width_crop, self._height_crop)), dtype = float).reshape(-1, self._width_crop * self._height_crop)
-            
-        #     predictions = model.predict(person)
-        #     if predictions[0][0] > 0.5:
-        #         cv2.imwrite("./saves/persons/non-military/image-video{}.jpg".format(n), copy_image)
-        #     else:
-        #         cv2.imwrite("./saves/persons/military/image-video{}.jpg".format(n), copy_image)
-        #     n = n + 1
+        self.__model.load_weights(self._checkpoint_path).expect_partial()

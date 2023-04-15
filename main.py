@@ -1,16 +1,35 @@
-from datetime import datetime
-from utils.Controller import ControllerClass
-from utils.decorators import benchmark
+from controller.Controller import ControllerClass
+from utils.utils import transform_initial_x_data, cut_too_short_training_data
 import cv2
 import os
+from utils.constants import WIDTH_3D_CNN, HEIGHT_3D_CNN, ANN_SIZE, MIN_NUMBER_OF_FRAMES_IN_3D_CNN
 
 
 def main():
-    controller = ControllerClass(0.3, 0.3, 1)
+    controller = ControllerClass(
+        detection_confidence_gen_ann=0.3,
+        tracking_confidence_gen_ann=0.3,
+        complexity_gen_ann=1,
+        width_3d_cnn = WIDTH_3D_CNN,
+        height_3d_cnn = HEIGHT_3D_CNN,
+    )
     
-    x, y = controller.gather_data_for_ann()
-    #print(y)
-    #pass
+    # x_train_data_ann, y_train_data_ann = controller.gather_data_for_ann()
+    # x_train_data_ann = transform_initial_x_data(x_train_data_ann)
+    # x_train_data_ann, y_train_data_ann = cut_too_short_training_data(
+    #     x_training_data=x_train_data_ann, 
+    #     y_training_data=y_train_data_ann, 
+    #     limiter=ANN_SIZE*6
+    # )
+
+    x_train_data_3d_cnn, y_train_data_3d_cnn = controller.gather_data_for_3d_cnn()
+    x_train_data_3d_cnn, y_train_data_3d_cnn = cut_too_short_training_data(
+        x_training_data=x_train_data_3d_cnn,
+        y_training_data=y_train_data_3d_cnn, 
+        limiter=MIN_NUMBER_OF_FRAMES_IN_3D_CNN
+    )
+
+    # controller.train_ann(x_train_data_ann, y_train_data_ann)
     
     
 def reverse_videos():
