@@ -4,6 +4,7 @@ from data_generators.TrainingDataGeneratorANN import TrainingDataGeneratorANN
 from data_generators.TrainingDataGenerator3DCNN import TrainingDataGenerator3DCNN
 from utils.decorators import benchmark
 from models.VectorModelANN import VectorModelANN
+from models.Model3DCNN import Model3DCNN
 import os
 from utils.utils import transfor_file_name_into_int
 from helpers.helpers import TrainerANNData, Trainer3DCNNData
@@ -13,6 +14,7 @@ from helpers.enums import TrainerEnum
 @dataclass
 class ControllerClass:
     __ann_model: VectorModelANN
+    __3d_cnn_model: Model3DCNN
     __ann_data: TrainerANNData
     __3d_cnn_data: Trainer3DCNNData
 
@@ -26,6 +28,7 @@ class ControllerClass:
         self.__3d_cnn_data = cnn_3d_data
 
         self.__ann_model = VectorModelANN()
+        self.__3d_cnn_model = Model3DCNN()
 
 
     @benchmark
@@ -74,5 +77,15 @@ class ControllerClass:
 
 
     @benchmark
+    def train_3d_cnn(self, x_training_data: list, y_training_data: list) -> None:
+        self.__3d_cnn_model.train_model(x_training_data, y_training_data)
+
+
+    @benchmark
     def save_ann(self) -> None:
         self.__ann_model.save_model()
+
+
+    @benchmark
+    def save_3d_cnn(self) -> None:
+        self.__3d_cnn_model.save_model()
