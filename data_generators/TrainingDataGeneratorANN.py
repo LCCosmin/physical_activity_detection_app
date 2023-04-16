@@ -31,7 +31,7 @@ class TrainingDataGeneratorANN:
         return angle
 
 
-    def generate_vector_data(self):
+    def generate_data(self):
         final_values_vector = []
         with self.__mp_pose.Pose(
             min_detection_confidence=self.__detection_confidence,
@@ -161,3 +161,7 @@ class TrainingDataGeneratorANN:
         self.__vid.release()
         cv2.destroyAllWindows()
         return final_values_vector
+
+
+    def update_new_vid(self, filename: str) -> None:
+        self.__vid = filename

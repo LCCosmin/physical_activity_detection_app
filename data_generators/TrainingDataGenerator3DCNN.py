@@ -23,7 +23,7 @@ class TrainingDataGenerator3DCNN:
         return img
 
 
-    def generate_3d_data(self) -> list:
+    def generate_data(self) -> list:
         final_3d_data = []
 
         if type(self.__vid) is str:
@@ -41,3 +41,7 @@ class TrainingDataGenerator3DCNN:
             final_3d_data.append(image)
         
         return final_3d_data
+
+
+    def update_new_vid(self, filename: str) -> None:
+        self.__vid = filename
