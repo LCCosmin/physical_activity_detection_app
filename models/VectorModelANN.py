@@ -11,7 +11,7 @@ from utils.utils import plot_graph
 @dataclass(kw_only=True)
 class VectorModelANN:
     _vector_size: int = ANN_SIZE * 6
-    _epochs_no: int = 256
+    _epochs_no: int = 1028
     _batch_size: int = 32
     _checkpoint_path: str = field(init=False)
     _training_folder: str = field(init=False)
@@ -36,12 +36,14 @@ class VectorModelANN:
             keras.layers.Dense(50, activation = 'relu', kernel_regularizer=tf.keras.regularizers.l2(0.001)),
             keras.layers.Dropout(0.1),
             
-            keras.layers.Dense(2, activation = 'sigmoid')
+            keras.layers.Dense(9, activation = 'sigmoid')
             ])
 
-        model.compile(optimizer = 'adam', 
-                      loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-                      metrics = ['accuracy'])
+        model.compile(
+            optimizer = 'adam', 
+            loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+            metrics = ['accuracy']
+        )
 
         return model
 

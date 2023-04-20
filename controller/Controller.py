@@ -66,8 +66,8 @@ class ControllerClass:
             )
             y_training_data.append(
                 transfor_file_name_into_int(filename)
-            ) 
-        
+            )
+
         return x_training_data, y_training_data
 
 

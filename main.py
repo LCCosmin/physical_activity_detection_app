@@ -40,8 +40,29 @@ def main():
     )
 
     # controller.train_ann(x_train_data_ann, y_train_data_ann)
+    controller.train_3d_cnn(x_train_data_3d_cnn, y_train_data_3d_cnn)
     
+from time import sleep
+
+def test_video():
+    vid = "C:\\Users\\Cosmin\\Desktop\\all_training_data\\Forearm\\2.mp4"
     
+    vid = cv2.VideoCapture(vid)
+    while vid.isOpened():
+        suc, img = vid.read()
+        
+        if suc == False:
+            break
+        print(f"suc: {type(suc)}")
+        print(f"img: {img}")
+        
+        cv2.imshow("d", img)
+        sleep(2)
+        
+    
+    vid.release()
+    cv2.destroyAllWindows()
+
 def reverse_videos():
     total_files = len([f for f in os.listdir("C:\\Users\\Cosmin\\Desktop\\licenta\\training data") if f.endswith("mp4")])
     # Iterate over files of given type in input directory
@@ -84,4 +105,5 @@ def rename_files():
 if __name__ == "__main__":
     #rename_files()
     #reverse_videos()
-    main()
+    # main()
+    test_video()

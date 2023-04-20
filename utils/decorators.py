@@ -22,8 +22,8 @@ def benchmark(func: Callable[..., Any]) -> Callable[..., Any]:
 
         logger = get_logger()
         logger.info(f"Execution of function {str(func.__name__).upper()} took {run_time} seconds.")
-        # with open("./logs.txt", 'a') as f:
-        #     f.write(f"Execution of function {str(func.__name__).upper()} took {run_time} seconds.\n")
+        with open("./logs.txt", 'a') as f:
+            f.write(f"Execution of function {str(func.__name__).upper()} took {run_time} seconds.\n")
         return result
     
     return wrapper

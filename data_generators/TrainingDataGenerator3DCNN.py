@@ -1,5 +1,7 @@
 from typing import Any
 import cv2
+import os
+
 
 class TrainingDataGenerator3DCNN:
     def __init__(
@@ -20,26 +22,35 @@ class TrainingDataGenerator3DCNN:
         
         img = img / 255
 
-        return img
-
 
     def generate_data(self) -> list:
         final_3d_data = []
 
         if type(self.__vid) is str:
-            self.__vid = cv2.VideoCapture("./training data/" + self.__vid)
+            print(os.getcwd()  + "\\training data\\" + self.__vid)
+            self.__vid = cv2.VideoCapture(os.getcwd()  + "\\training data\\" + self.__vid)
         else:
             self.__vid = cv2.VideoCapture(self.__vid)
 
+        
+        count_frame = 0
         while self.__vid.isOpened():
             success, image = self.__vid.read()
 
             if not success:
                 break
 
-            image = self.normalize(image)
-            final_3d_data.append(image)
-        
+            if count_frame % 120 == 0:
+                cv2.imshow("d",image)
+                image = self.normalize(image)
+                #print(image)
+                final_3d_data.append(image)
+                count_frame = 0
+            else:
+                count_frame += 1
+
+        self.__vid.release()
+        cv2.destroyAllWindows()
         return final_3d_data
 
 
