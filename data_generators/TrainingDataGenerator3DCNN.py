@@ -21,14 +21,16 @@ class TrainingDataGenerator3DCNN:
         img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         
         img = img / 255
+        # img = img.tolist()
+
+        return img
 
 
     def generate_data(self) -> list:
         final_3d_data = []
 
         if type(self.__vid) is str:
-            print(os.getcwd()  + "\\training data\\" + self.__vid)
-            self.__vid = cv2.VideoCapture(os.getcwd()  + "\\training data\\" + self.__vid)
+            self.__vid = cv2.VideoCapture(os.getcwd()  + "/training data/" + self.__vid)
         else:
             self.__vid = cv2.VideoCapture(self.__vid)
 
@@ -41,9 +43,7 @@ class TrainingDataGenerator3DCNN:
                 break
 
             if count_frame % 120 == 0:
-                cv2.imshow("d",image)
                 image = self.normalize(image)
-                #print(image)
                 final_3d_data.append(image)
                 count_frame = 0
             else:

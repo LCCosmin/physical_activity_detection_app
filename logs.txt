@@ -1,5 +1,0 @@
-Execution of function GATHER_TRAINING_DATA took 2156.3622875213623 seconds.
-Execution of function GATHER_TRAINING_DATA took 36394.69704580307 seconds.
-Execution of function TRAIN_ANN took 6.874511241912842 seconds.
-Execution of function GATHER_TRAINING_DATA took 1934.5063164234161 seconds.
-Execution of function TRAIN_ANN took 24.98740863800049 seconds.

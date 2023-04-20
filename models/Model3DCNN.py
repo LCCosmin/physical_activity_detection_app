@@ -5,7 +5,8 @@ import keras
 from keras import layers
 from sklearn.model_selection import train_test_split
 import numpy as np
-    
+
+from time import sleep
 @dataclass(kw_only=True)
 class Model3DCNN:
   _width_3d_cnn: int = WIDTH_3D_CNN
@@ -74,32 +75,26 @@ class Model3DCNN:
   def train_model(self, x_training_data: list, y_training_data: list) -> None:
     print("INFO:3D_MODEL_CNN: Starting the training protocol ...")
 
-    # print(f"""
-    #   \n\n
-    #     {type(x_training_data[0][0])}\n
-    #     ------------------
-    #     \n
-    #     {type(x_training_data)}
-    #     \n\n
-    #     {y_training_data}
-    #   \n\n   
-    # """)
+    
+    for idx, elem in enumerate(x_training_data):
+      x_training_data[idx] = np.hstack(x_training_data[idx])
+    y_training_data = np.array(y_training_data)
 
-    # x_data = np.array(x_training_data)
-    # y_data = np.array(y_training_data)
-    x_data = x_training_data
-    y_data = y_training_data
+    
 
     x_train, x_test, y_train, y_test =(
         train_test_split(
-            x_data, y_data, 
+            x_training_data, y_training_data, 
             test_size = 0.2,
             shuffle=(True)
         )
     )
-    
-    
-    
+
+    print(len(x_train))
+    print(len(y_train))
+    # print(x_training_data)
+    # print(x_training_data)
+    sleep(5)
     history = self.__model.fit(x_train, y_train, epochs = self._epochs_no, batch_size = self._batch_size)
 
     _, accuracy = self.__model.evaluate(x_test, y_test, verbose=2)

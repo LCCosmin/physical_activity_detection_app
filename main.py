@@ -5,9 +5,11 @@ import os
 from utils.constants import WIDTH_3D_CNN, HEIGHT_3D_CNN, ANN_SIZE, MIN_NUMBER_OF_FRAMES_IN_3D_CNN
 from helpers.helpers import TrainerANNData, Trainer3DCNNData
 from helpers.enums import TrainerEnum
+import numpy as np
 
 
 def main():
+    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
     trainer_ann_data = TrainerANNData(
         detection_confidece=0.3,
         tracking_confidence=0.3,
@@ -24,6 +26,7 @@ def main():
         cnn_3d_data=trainer_3d_cnn_data,
     )
     
+    # ANN
     # x_train_data_ann, y_train_data_ann = controller.gather_training_data(TrainerEnum.ANN)
     # x_train_data_ann = transform_initial_x_data(x_train_data_ann)
     # x_train_data_ann, y_train_data_ann = cut_too_short_training_data(
@@ -31,21 +34,23 @@ def main():
     #     y_training_data=y_train_data_ann, 
     #     limiter=ANN_SIZE*6
     # )
-
-    x_train_data_3d_cnn, y_train_data_3d_cnn = controller.gather_training_data(TrainerEnum.CNN_3D)
-    x_train_data_3d_cnn, y_train_data_3d_cnn = cut_too_short_training_data(
-        x_training_data=x_train_data_3d_cnn,
-        y_training_data=y_train_data_3d_cnn, 
-        limiter=MIN_NUMBER_OF_FRAMES_IN_3D_CNN
-    )
-
     # controller.train_ann(x_train_data_ann, y_train_data_ann)
-    controller.train_3d_cnn(x_train_data_3d_cnn, y_train_data_3d_cnn)
+
+    # 3D CNN
+    # x_train_data_3d_cnn, y_train_data_3d_cnn = controller.gather_training_data(TrainerEnum.CNN_3D)
+    # x_train_data_3d_cnn, y_train_data_3d_cnn = cut_too_short_training_data(
+    #     x_training_data=x_train_data_3d_cnn,
+    #     y_training_data=y_train_data_3d_cnn, 
+    #     limiter=MIN_NUMBER_OF_FRAMES_IN_3D_CNN
+    # )
+    # controller.train_3d_cnn(x_train_data_3d_cnn, y_train_data_3d_cnn)
+
+    # CNN
     
 from time import sleep
 
 def test_video():
-    vid = "C:\\Users\\Cosmin\\Desktop\\all_training_data\\Forearm\\2.mp4"
+    vid = f"{os.getcwd()}/training data/abs_1.mp4"
     
     vid = cv2.VideoCapture(vid)
     while vid.isOpened():
@@ -53,13 +58,15 @@ def test_video():
         
         if suc == False:
             break
+
+        img = img.tolist()
         print(f"suc: {type(suc)}")
-        print(f"img: {img}")
-        
+        print(f"img: {type(img)}")
+
         cv2.imshow("d", img)
-        sleep(2)
+        cv2.waitKey(0)
         
-    
+    print(os.getcwd())
     vid.release()
     cv2.destroyAllWindows()
 
@@ -105,5 +112,5 @@ def rename_files():
 if __name__ == "__main__":
     #rename_files()
     #reverse_videos()
-    # main()
-    test_video()
+    main()
+    # test_video()

@@ -71,13 +71,17 @@ def transform_initial_x_data(x_training_data: list) -> list:
     return final_x_data
 
 
+def transform_npndarray_list_to_list(array: list) -> list:
+    return [elem.tolist() for elem in array]
+
+
 def cut_too_short_training_data(x_training_data: list, y_training_data:list, limiter: int) -> Union[list, list]:
     new_x_data = []
     new_y_data = []
 
     for idx, elem in enumerate(x_training_data):
         if len(elem) >= limiter:
-            new_x_data.append(x_training_data[idx])
+            new_x_data.append(transform_npndarray_list_to_list(x_training_data[idx]))
             new_y_data.append(y_training_data[idx])
 
     return new_x_data, new_y_data
