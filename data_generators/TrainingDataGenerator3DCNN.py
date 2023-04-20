@@ -54,5 +54,5 @@ class TrainingDataGenerator3DCNN:
         return final_3d_data
 
 
-    def update_new_vid(self, filename: str) -> None:
+    def update_new_obj(self, filename: str) -> None:
         self.__vid = filename

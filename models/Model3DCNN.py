@@ -20,7 +20,7 @@ class Model3DCNN:
 
   def __post_init__(self) -> None:
     self._training_folder = "./training_data_vector_model_cnn"
-    self._checkpoint_path = "./brains/vector_model_cnn/cp.ckpt"
+    self._checkpoint_path = "./brains/vector_3d_model_brain.ckpt"
     self.__model = self.create_model()
 
 

@@ -2,33 +2,42 @@ from dataclasses import dataclass
 from typing import Union
 from data_generators.TrainingDataGeneratorANN import TrainingDataGeneratorANN
 from data_generators.TrainingDataGenerator3DCNN import TrainingDataGenerator3DCNN
+from data_generators.TrainingDataGeneratorCNN import TrainingDataGeneratorCNN
 from utils.decorators import benchmark
 from models.VectorModelANN import VectorModelANN
 from models.Model3DCNN import Model3DCNN
+from models.PictureModelCNN import PictureModelCNN
 import os
 from utils.utils import transfor_file_name_into_int
-from helpers.helpers import TrainerANNData, Trainer3DCNNData
+from helpers.helpers import TrainerANNData, Trainer3DCNNData, TrainerCNNData
 from helpers.enums import TrainerEnum
 
 
 @dataclass
 class ControllerClass:
+    # models
     __ann_model: VectorModelANN
     __3d_cnn_model: Model3DCNN
+    __cnn_model: PictureModelCNN
+    # data for models
     __ann_data: TrainerANNData
     __3d_cnn_data: Trainer3DCNNData
+    __cnn_data: TrainerCNNData
 
 
     def __init__(
         self, 
         ann_data,
         cnn_3d_data,
+        cnn_data,
     ) -> None:
         self.__ann_data = ann_data
         self.__3d_cnn_data = cnn_3d_data
+        self.__cnn_data = cnn_data
 
         self.__ann_model = VectorModelANN()
         self.__3d_cnn_model = Model3DCNN()
+        self.__cnn_model = PictureModelCNN()
 
 
     @benchmark
@@ -51,22 +60,35 @@ class ControllerClass:
                 complexity=self.__ann_data.complexity,
             )
         else:
-            trainer_enum = ...
+            trainer = TrainingDataGeneratorCNN(
+                vid='',
+                width_image=self.__cnn_data.width_cnn,
+                height_image=self.__cnn_data.height_cnn,
+            )
 
         for filename in os.listdir(os.getcwd()  + "/training data"):         
             print(f"INFO:GATHER_DATA_{trainer_enum.value}: Processing file {counter_files} with the name {filename}")
             counter_files+=1
 
-            trainer.update_new_vid(filename)
+            trainer.update_new_obj(filename)
 
             x_train_slice = trainer.generate_data()
 
-            x_training_data.append(
-                x_train_slice
-            )
-            y_training_data.append(
-                transfor_file_name_into_int(filename)
-            )
+            if trainer_enum.value == TrainerEnum.CNN.value:
+                x_training_data.extend(
+                    x_train_slice
+                )
+                for _ in range(len(x_train_slice)):
+                    y_training_data.append(
+                        transfor_file_name_into_int(filename)
+                    )
+            else:
+                x_training_data.append(
+                    x_train_slice
+                )
+                y_training_data.append(
+                    transfor_file_name_into_int(filename)
+                )
 
         return x_training_data, y_training_data
 
@@ -82,6 +104,11 @@ class ControllerClass:
 
 
     @benchmark
+    def train_cnn(self, x_training_data: list, y_training_data: list) -> None:
+        self.__cnn_model.train_model(x_training_data, y_training_data)
+
+
+    @benchmark
     def save_ann(self) -> None:
         self.__ann_model.save_model()
 
@@ -89,3 +116,8 @@ class ControllerClass:
     @benchmark
     def save_3d_cnn(self) -> None:
         self.__3d_cnn_model.save_model()
+
+
+    @benchmark
+    def save_cnn(self) -> None:
+        self.__cnn_model.save_model()

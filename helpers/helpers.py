@@ -28,3 +28,14 @@ class Trainer3DCNNData:
     def __init__(self, width_3d_cnn, height_3d_cnn) -> None:
         self.width_3d_cnn = width_3d_cnn
         self.height_3d_cnn = height_3d_cnn
+
+
+@dataclass(kw_only=True)
+class TrainerCNNData:
+    width_cnn: int
+    height_cnn: int
+
+
+    def __init__(self, width_cnn, height_cnn) -> None:
+        self.width_cnn = width_cnn
+        self.height_cnn = height_cnn

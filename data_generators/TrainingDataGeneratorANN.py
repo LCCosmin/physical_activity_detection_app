@@ -163,5 +163,5 @@ class TrainingDataGeneratorANN:
         return final_values_vector
 
 
-    def update_new_vid(self, filename: str) -> None:
+    def update_new_obj(self, filename: str) -> None:
         self.__vid = filename
