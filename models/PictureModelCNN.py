@@ -8,13 +8,14 @@ import cv2
 import os
 import matplotlib.pyplot as plt
 from time import sleep
+from utils.utils import plot_graph
 
 @dataclass(kw_only=True)
 class PictureModelCNN:
     _width_picture: int = WIDTH_PICTURE_CNN
     _height_picture: int = HEIGHT_PICTURE_CNN
-    _epochs_no: int = 1028
-    _batch_size: int = 32
+    _epochs_no: int = 1024
+    _batch_size: int = 256
     _checkpoint_path: str = field(init=False)
     _training_folder: str = field(init=False)
     __model: tf.keras.models.Sequential = field(init=False)
@@ -47,7 +48,7 @@ class PictureModelCNN:
             keras.layers.Dense(50, activation = 'relu', kernel_regularizer=tf.keras.regularizers.l2(0.001)),
             keras.layers.Dropout(0.1),
             
-            keras.layers.Dense(2, activation = 'sigmoid')
+            keras.layers.Dense(9, activation = 'sigmoid')
             ])
         
         model.compile(
@@ -64,20 +65,21 @@ class PictureModelCNN:
 
 
     def train_model(self, x_training_data: list, y_training_data: list) -> None:
-        print("AM AJUNS INAINTE DE BOOOOOM")
-        sleep(10)
-        
         x_training_data, x_test, y_training_data, y_test =(
             train_test_split(
                 np.array(x_training_data, dtype=(float)).reshape(-1, self._width_picture * self._height_picture),
                 np.array(y_training_data, dtype=(int)), 
-                test_size = 0.2,
+                test_size = 0.3,
                 shuffle=(True)
             )
         )
-        print("AM TRAIT BOOOOOOOMU`")
-
+        print(f"{len(y_training_data)}")
+        sleep(10)
+        print(f"{(y_training_data)}")
+        sleep(10)
         history = self.__model.fit(x_training_data, y_training_data, epochs = self._epochs_no, batch_size = self._batch_size)
+
+        plot_graph(history, "cnn_model")
 
         _, accuracy = self.__model.evaluate(x_test, y_test, verbose=2)
 

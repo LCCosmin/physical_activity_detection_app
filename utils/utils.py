@@ -5,6 +5,8 @@ import tensorflow as tf
 from keras import layers
 import keras
 import einops
+from helpers.enums import TrainerEnum
+
 
 def transfor_file_name_into_int(filename: str) -> int:
         """_summary_
@@ -75,21 +77,29 @@ def transform_npndarray_list_to_list(array: list) -> list:
     return [elem.tolist() for elem in array]
 
 
-def cut_too_short_training_data(x_training_data: list, y_training_data:list, limiter: int) -> Union[list, list]:
+def cut_too_short_training_data(
+      x_training_data: list,
+      y_training_data:list, 
+      limiter: int,
+      signature: TrainerEnum
+  ) -> Union[list, list]:
     new_x_data = []
     new_y_data = []
 
     for idx, elem in enumerate(x_training_data):
         if len(elem) >= limiter:
-            new_x_data.append(transform_npndarray_list_to_list(x_training_data[idx]))
+            if TrainerEnum.ANN.value == signature.value:
+               new_x_data.append(x_training_data[idx])
+            else:
+              new_x_data.append(transform_npndarray_list_to_list(x_training_data[idx]))
             new_y_data.append(y_training_data[idx])
 
     return new_x_data, new_y_data
 
 
-def plot_graph(history: Any) -> None:
+def plot_graph(history: Any, name: str) -> None:
     plt.plot(history.history['loss'])
-    plt.savefig("./ann_loss.png")
+    plt.savefig(f"./{name}.png")
 
 
 # 3D Model utils

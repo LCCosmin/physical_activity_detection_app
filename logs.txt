@@ -9,3 +9,13 @@ Execution of function GATHER_TRAINING_DATA took 41.67757272720337 seconds.
 Execution of function GATHER_TRAINING_DATA took 41.46149682998657 seconds.
 Execution of function GATHER_TRAINING_DATA took 41.796557664871216 seconds.
 Execution of function GATHER_TRAINING_DATA took 41.70128560066223 seconds.
+Execution of function GATHER_TRAINING_DATA took 2165.2925674915314 seconds.
+Execution of function GATHER_TRAINING_DATA took 2354.2682750225067 seconds.
+Execution of function GATHER_TRAINING_DATA took 2373.1097824573517 seconds.
+Execution of function TRAIN_ANN took 7.639468193054199 seconds.
+Execution of function GATHER_TRAINING_DATA took 40.99916410446167 seconds.
+Execution of function GATHER_TRAINING_DATA took 40.848690032958984 seconds.
+Execution of function GATHER_TRAINING_DATA took 40.85967397689819 seconds.
+Execution of function TRAIN_CNN took 333.9969584941864 seconds.
+Execution of function GATHER_TRAINING_DATA took 40.60588312149048 seconds.
+Execution of function TRAIN_CNN took 966.8719372749329 seconds.
