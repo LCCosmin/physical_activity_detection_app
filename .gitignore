@@ -35,6 +35,8 @@ renamed-files/
 backup/
 training_data_picture_model_cnn/
 .vscode/
+*.png
+*.txt
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
