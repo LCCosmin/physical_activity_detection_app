@@ -124,10 +124,10 @@ class ControllerClass:
 
     
     @benchmark
-    def evaluate_cnn_image(self, image: str) -> None:
-        self.__cnn_model.evaluate_image(image)
+    def evaluate_cnn_image(self, image: str) -> str:
+        return self.__cnn_model.evaluate_image(image)
 
 
     @benchmark
-    def evaluate_ann_video(self, image: str) -> list:
+    def evaluate_ann_video(self, image: str) -> str:
         return self.__ann_model.evaluate_video(image)

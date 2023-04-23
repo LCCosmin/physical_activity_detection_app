@@ -8,13 +8,14 @@ import cv2
 import os
 import matplotlib.pyplot as plt
 from time import sleep
-from utils.utils import plot_graph
+from utils.utils import plot_graph, transform_int_into_file_name
+
 
 @dataclass(kw_only=True)
 class PictureModelCNN:
     _width_picture: int = WIDTH_PICTURE_CNN
     _height_picture: int = HEIGHT_PICTURE_CNN
-    _epochs_no: int = 5
+    _epochs_no: int = 1024
     _batch_size: int = 256
     _checkpoint_path: str = field(init=False)
     _training_folder: str = field(init=False)
@@ -37,7 +38,7 @@ class PictureModelCNN:
     
     def create_model(self) -> tf.keras.models.Sequential:
         model = tf.keras.models.Sequential([
-            keras.layers.InputLayer(input_shape=(self._height_picture, self._width_picture, 1)),
+            keras.layers.InputLayer(input_shape=(self._height_picture * self._width_picture,)),
             keras.layers.Flatten(input_shape=(self._width_picture, self._height_picture, 1)),  # Add the input_shape
             keras.layers.Dense(400, activation = 'relu', kernel_regularizer=tf.keras.regularizers.l2(0.001)),
             keras.layers.Dropout(0.1),
@@ -85,12 +86,15 @@ class PictureModelCNN:
         print("INFO:MODEL_CNN: Training done ..")
 
 
-    def evaluate_image(self, image) -> None:
+    def evaluate_image(self, image) -> str:
         model = self.create_model()
         model.load_weights(self._checkpoint_path).expect_partial()
 
-        processed_image = self.half_preprocess(cv2.imread(image))
-        processed_image = np.expand_dims(processed_image, axis=-1)  # Add the channel dimension
-        processed_image = np.expand_dims(processed_image, axis=0)  # Add the batch dimension
+        image = cv2.imread(image)
+        image = self.normalize(image)
+        image = np.array(image, dtype=(float)).reshape(-1, self._width_picture * self._height_picture),
 
-        print(model.predict(processed_image))
+        pred = model.predict(image)[0]
+        max_val = max(pred)
+        max_idx = pred.tolist().index(max_val)
+        return transform_int_into_file_name(max_idx)

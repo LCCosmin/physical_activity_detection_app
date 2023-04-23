@@ -59,3 +59,15 @@ Execution of function EVALUATE_ANN_VIDEO took 6.548994064331055 seconds.
 Execution of function EVALUATE_ANN_VIDEO took 6.069689512252808 seconds.
 Execution of function EVALUATE_ANN_VIDEO took 7.454408645629883 seconds.
 Execution of function EVALUATE_ANN_VIDEO took 4.9680016040802 seconds.
+Execution of function GATHER_TRAINING_DATA took 41.05069851875305 seconds.
+Execution of function GATHER_TRAINING_DATA took 41.110288858413696 seconds.
+Execution of function GATHER_TRAINING_DATA took 40.88025403022766 seconds.
+Execution of function TRAIN_CNN took 35.148292541503906 seconds.
+Execution of function SAVE_CNN took 0.05432009696960449 seconds.
+Execution of function GATHER_TRAINING_DATA took 40.901793003082275 seconds.
+Execution of function TRAIN_CNN took 995.6362593173981 seconds.
+Execution of function SAVE_CNN took 0.12495112419128418 seconds.
+Execution of function EVALUATE_CNN_IMAGE took 0.5582656860351562 seconds.
+Execution of function EVALUATE_CNN_IMAGE took 0.5561368465423584 seconds.
+Execution of function EVALUATE_CNN_IMAGE took 0.5561237335205078 seconds.
+Execution of function EVALUATE_CNN_IMAGE took 0.5539915561676025 seconds.

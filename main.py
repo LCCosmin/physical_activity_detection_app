@@ -68,7 +68,7 @@ def main():
     # x_train_data_cnn, y_train_data_cnn = controller.gather_training_data(TrainerEnum.CNN)
     # controller.train_cnn(x_train_data_cnn, y_train_data_cnn)
     # controller.save_cnn()
-    # controller.evaluate_cnn_image("/home/cosmin/Desktop/licenta/physical_activity_detection_app/111.png")
+    # print(f"Predict result for CNN is: {controller.evaluate_cnn_image('/home/cosmin/Desktop/licenta/physical_activity_detection_app/333.png')}")
     
 from time import sleep
 

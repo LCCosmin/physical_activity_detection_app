@@ -7,7 +7,6 @@ import numpy as np
 from utils.constants import ANN_SIZE
 from utils.utils import plot_graph, transform_initial_x_data, transform_int_into_file_name
 from data_generators.TrainingDataGeneratorANN import TrainingDataGeneratorANN
-tf.config.run_functions_eagerly(True)
 
 
 @dataclass(kw_only=True)
