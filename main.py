@@ -51,6 +51,8 @@ def main():
     #     signature=TrainerEnum.ANN
     # )
     # controller.train_ann(x_train_data_ann, y_train_data_ann)
+    # controller.save_ann()
+    # print(f"Predict result for ANN is: {controller.evaluate_ann_image('/home/cosmin/Desktop/licenta/physical_activity_detection_app/111.png')}")
 
     # 3D CNN
     # x_train_data_3d_cnn, y_train_data_3d_cnn = controller.gather_training_data(TrainerEnum.CNN_3D)
@@ -65,6 +67,8 @@ def main():
     # CNN
     x_train_data_cnn, y_train_data_cnn = controller.gather_training_data(TrainerEnum.CNN)
     controller.train_cnn(x_train_data_cnn, y_train_data_cnn)
+    controller.save_cnn()
+    controller.evaluate_cnn_image("/home/cosmin/Desktop/licenta/physical_activity_detection_app/111.png")
     
 from time import sleep
 

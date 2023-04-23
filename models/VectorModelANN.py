@@ -5,7 +5,8 @@ import tensorflow as tf
 from tensorflow import keras
 import numpy as np
 from utils.constants import ANN_SIZE
-from utils.utils import plot_graph
+from utils.utils import plot_graph, transform_initial_x_data
+from data_generators.TrainingDataGeneratorANN import TrainingDataGeneratorANN
 
 
 @dataclass(kw_only=True)
@@ -19,8 +20,7 @@ class VectorModelANN:
 
 
     def __post_init__(self) -> None:
-        self._training_folder = "./training_data_vector_model_cnn"
-        self._checkpoint_path = "./brains/vector_model_brain.ckpt"
+        self._checkpoint_path = "./brains/ann_brain/vector_model_brain.ckpt"
         self.__model = self.create_model()
 
 
@@ -36,12 +36,12 @@ class VectorModelANN:
             keras.layers.Dense(50, activation = 'relu', kernel_regularizer=tf.keras.regularizers.l2(0.001)),
             keras.layers.Dropout(0.1),
             
-            keras.layers.Dense(9, activation = 'sigmoid')
+            keras.layers.Dense(9, activation = 'softmax')
             ])
 
         model.compile(
             optimizer = 'adam', 
-            loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+            loss=tf.keras.losses.CategoricalCrossentropy(from_logits=True),
             metrics = ['accuracy']
         )
 
@@ -66,6 +66,9 @@ class VectorModelANN:
             )
         )
 
+        # print(x_data)
+        print(y_data)
+
         history = self.__model.fit(x_train, y_train, epochs = self._epochs_no, batch_size = self._batch_size)
 
         _, accuracy = self.__model.evaluate(x_test, y_test, verbose=2)
@@ -73,8 +76,15 @@ class VectorModelANN:
         print(f"INFO:SHOWING RESULTS OF THE TRAINING: {self.__model.predict(x_test)[0]}")
         print(f"INFO:VECTOR_MODEL_ANN: Accuracy : {accuracy}")
         print("INFO:VECTOR_MODEL_ANN: Training done ..")
-        # plot_graph(history)
+        plot_graph(history, "ann_plot")
 
 
-    def evaluate_video(self, video) -> None:
-        self.__model.load_weights(self._checkpoint_path).expect_partial()
+    def evaluate_image(self, image) -> None:
+        model = self.create_model()
+        model.load_weights(self._checkpoint_path).expect_partial()
+        data_image = TrainingDataGeneratorANN(vid=image).generate_data_image()
+
+        data_image = transform_initial_x_data(data_image)
+        data_image = np.array(data_image)
+
+        return model.predict(data_image)

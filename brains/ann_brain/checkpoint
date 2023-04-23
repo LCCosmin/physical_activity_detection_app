@@ -1,0 +1,2 @@
+model_checkpoint_path: "vector_model_brain.ckpt"
+all_model_checkpoint_paths: "vector_model_brain.ckpt"

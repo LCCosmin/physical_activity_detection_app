@@ -8,7 +8,7 @@ import einops
 from helpers.enums import TrainerEnum
 
 
-def transfor_file_name_into_int(filename: str) -> int:
+def transfor_file_name_into_int(filename: str) -> list:
         """_summary_
 
             0 - ABS
@@ -22,23 +22,23 @@ def transfor_file_name_into_int(filename: str) -> int:
             8 - TRICEPS
         """
         if "abs" in filename:
-            return 0
+            return [1, 0, 0, 0, 0, 0, 0, 0, 0]
         elif "back" in filename:
-            return 1
+            return [0, 1, 0, 0, 0, 0, 0, 0, 0]
         elif "biceps" in filename:
-            return 2
+            return [0, 0, 1, 0, 0, 0, 0, 0, 0]
         elif "butt" in filename:
-            return 3
+            return [0, 0, 0, 1, 0, 0, 0, 0, 0]
         elif "chest" in filename:
-            return 4
+            return [0, 0, 0, 0, 1, 0, 0, 0, 0]
         elif "forearm" in filename:
-            return 5
+            return [0, 0, 0, 0, 0, 1, 0, 0, 0]
         elif "legs" in filename:
-            return 6
+            return [0, 0, 0, 0, 0, 0, 1, 0, 0]
         elif "shoulder" in filename:
-            return 7
+            return [0, 0, 0, 0, 0, 0, 0, 1, 0]
         elif "triceps" in filename:
-            return 8
+            return [0, 0, 0, 0, 0, 0, 0, 0, 1]
 
 
 def transform_initial_x_data(x_training_data: list) -> list:
@@ -99,6 +99,7 @@ def cut_too_short_training_data(
 
 def plot_graph(history: Any, name: str) -> None:
     plt.plot(history.history['loss'])
+    plt.plot(history.history['accuracy'])
     plt.savefig(f"./{name}.png")
 
 

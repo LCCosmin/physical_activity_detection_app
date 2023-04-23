@@ -7,6 +7,8 @@ from sklearn.model_selection import train_test_split
 import numpy as np
 
 from time import sleep
+
+
 @dataclass(kw_only=True)
 class Model3DCNN:
   _width_3d_cnn: int = WIDTH_3D_CNN
@@ -20,7 +22,7 @@ class Model3DCNN:
 
   def __post_init__(self) -> None:
     self._training_folder = "./training_data_vector_model_cnn"
-    self._checkpoint_path = "./brains/vector_3d_model_brain.ckpt"
+    self._checkpoint_path = "./brains/cnn_3d_brain/vector_3d_model_brain.ckpt"
     self.__model = self.create_model()
 
 
@@ -66,10 +68,6 @@ class Model3DCNN:
 
   def save_model(self) -> None:
     self.__model.save_weights(self._checkpoint_path)
-    
-    
-  def evaluate_video(self, video) -> None:
-    self.__model.load_weights(self._checkpoint_path).expect_partial()
     
   
   def train_model(self, x_training_data: list, y_training_data: list) -> None:

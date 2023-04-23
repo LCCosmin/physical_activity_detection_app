@@ -14,7 +14,7 @@ from utils.utils import plot_graph
 class PictureModelCNN:
     _width_picture: int = WIDTH_PICTURE_CNN
     _height_picture: int = HEIGHT_PICTURE_CNN
-    _epochs_no: int = 1024
+    _epochs_no: int = 5
     _batch_size: int = 256
     _checkpoint_path: str = field(init=False)
     _training_folder: str = field(init=False)
@@ -22,8 +22,7 @@ class PictureModelCNN:
 
     
     def __post_init__(self) -> None:
-        self._training_folder = "./training_data_picture_model_cnn"
-        self._checkpoint_path = "./brains/picture_model_brain.ckpt"
+        self._checkpoint_path = "./brains/cnn_brain/picture_model_brain.ckpt"
         self.__model = self.create_model()
 
 
@@ -38,7 +37,8 @@ class PictureModelCNN:
     
     def create_model(self) -> tf.keras.models.Sequential:
         model = tf.keras.models.Sequential([
-            keras.layers.InputLayer(input_shape=(self._width_picture * self._height_picture,)),
+            keras.layers.InputLayer(input_shape=(self._height_picture, self._width_picture, 1)),
+            keras.layers.Flatten(input_shape=(self._width_picture, self._height_picture, 1)),  # Add the input_shape
             keras.layers.Dense(400, activation = 'relu', kernel_regularizer=tf.keras.regularizers.l2(0.001)),
             keras.layers.Dropout(0.1),
             keras.layers.Dense(200, activation = 'relu', kernel_regularizer=tf.keras.regularizers.l2(0.001)),
@@ -48,12 +48,12 @@ class PictureModelCNN:
             keras.layers.Dense(50, activation = 'relu', kernel_regularizer=tf.keras.regularizers.l2(0.001)),
             keras.layers.Dropout(0.1),
             
-            keras.layers.Dense(9, activation = 'sigmoid')
+            keras.layers.Dense(9, activation = 'softmax')
             ])
         
         model.compile(
             optimizer = 'adam', 
-            loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+            loss=tf.keras.losses.CategoricalCrossentropy(),
             metrics = ['accuracy']
         )
 
@@ -73,10 +73,7 @@ class PictureModelCNN:
                 shuffle=(True)
             )
         )
-        print(f"{len(y_training_data)}")
-        sleep(10)
-        print(f"{(y_training_data)}")
-        sleep(10)
+
         history = self.__model.fit(x_training_data, y_training_data, epochs = self._epochs_no, batch_size = self._batch_size)
 
         plot_graph(history, "cnn_model")
@@ -89,4 +86,11 @@ class PictureModelCNN:
 
 
     def evaluate_image(self, image) -> None:
-        ...
+        model = self.create_model()
+        model.load_weights(self._checkpoint_path).expect_partial()
+
+        processed_image = self.half_preprocess(cv2.imread(image))
+        processed_image = np.expand_dims(processed_image, axis=-1)  # Add the channel dimension
+        processed_image = np.expand_dims(processed_image, axis=0)  # Add the batch dimension
+
+        print(model.predict(processed_image))

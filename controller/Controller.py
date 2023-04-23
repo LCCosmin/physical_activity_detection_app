@@ -121,3 +121,13 @@ class ControllerClass:
     @benchmark
     def save_cnn(self) -> None:
         self.__cnn_model.save_model()
+
+    
+    @benchmark
+    def evaluate_cnn_image(self, image: str) -> None:
+        self.__cnn_model.evaluate_image(image)
+
+
+    @benchmark
+    def evaluate_ann_image(self, image: str) -> list:
+        return self.__ann_model.evaluate_image(image)
