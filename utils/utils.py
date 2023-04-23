@@ -8,37 +8,70 @@ import einops
 from helpers.enums import TrainerEnum
 
 
-def transfor_file_name_into_int(filename: str) -> list:
-        """_summary_
+def transform_file_name_into_int(filename: str) -> list:
+    """_summary_
 
-            0 - ABS
-            1 - BACK
-            2 - BICEPS
-            3 - BUTT
-            4 - CHEST
-            5 - FOREARM
-            6 - LEGS
-            7 - SHOULDER
-            8 - TRICEPS
-        """
-        if "abs" in filename:
-            return [1, 0, 0, 0, 0, 0, 0, 0, 0]
-        elif "back" in filename:
-            return [0, 1, 0, 0, 0, 0, 0, 0, 0]
-        elif "biceps" in filename:
-            return [0, 0, 1, 0, 0, 0, 0, 0, 0]
-        elif "butt" in filename:
-            return [0, 0, 0, 1, 0, 0, 0, 0, 0]
-        elif "chest" in filename:
-            return [0, 0, 0, 0, 1, 0, 0, 0, 0]
-        elif "forearm" in filename:
-            return [0, 0, 0, 0, 0, 1, 0, 0, 0]
-        elif "legs" in filename:
-            return [0, 0, 0, 0, 0, 0, 1, 0, 0]
-        elif "shoulder" in filename:
-            return [0, 0, 0, 0, 0, 0, 0, 1, 0]
-        elif "triceps" in filename:
-            return [0, 0, 0, 0, 0, 0, 0, 0, 1]
+        0 - ABS
+        1 - BACK
+        2 - BICEPS
+        3 - BUTT
+        4 - CHEST
+        5 - FOREARM
+        6 - LEGS
+        7 - SHOULDER
+        8 - TRICEPS
+    """
+    if "abs" in filename:
+        return [1, 0, 0, 0, 0, 0, 0, 0, 0]
+    elif "back" in filename:
+        return [0, 1, 0, 0, 0, 0, 0, 0, 0]
+    elif "biceps" in filename:
+        return [0, 0, 1, 0, 0, 0, 0, 0, 0]
+    elif "butt" in filename:
+        return [0, 0, 0, 1, 0, 0, 0, 0, 0]
+    elif "chest" in filename:
+        return [0, 0, 0, 0, 1, 0, 0, 0, 0]
+    elif "forearm" in filename:
+        return [0, 0, 0, 0, 0, 1, 0, 0, 0]
+    elif "legs" in filename:
+        return [0, 0, 0, 0, 0, 0, 1, 0, 0]
+    elif "shoulder" in filename:
+        return [0, 0, 0, 0, 0, 0, 0, 1, 0]
+    elif "triceps" in filename:
+        return [0, 0, 0, 0, 0, 0, 0, 0, 1]
+
+
+def transform_int_into_file_name(idx: int) -> str:
+    """_summary_
+
+        0 - ABS
+        1 - BACK
+        2 - BICEPS
+        3 - BUTT
+        4 - CHEST
+        5 - FOREARM
+        6 - LEGS
+        7 - SHOULDER
+        8 - TRICEPS
+    """
+    if idx == 0:
+       return "ABS"
+    if idx == 1:
+       return "BACK"
+    if idx == 2:
+       return "BICEPS"
+    if idx == 3:
+       return "BUTT"
+    if idx == 4:
+       return "CHEST"
+    if idx == 5:
+       return "FOREARM"
+    if idx == 6:
+       return "LEGS"
+    if idx == 7:
+       return "SHOULDER"
+    if idx == 8:
+       return "TRICEPS"
 
 
 def transform_initial_x_data(x_training_data: list) -> list:

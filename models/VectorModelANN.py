@@ -5,8 +5,9 @@ import tensorflow as tf
 from tensorflow import keras
 import numpy as np
 from utils.constants import ANN_SIZE
-from utils.utils import plot_graph, transform_initial_x_data
+from utils.utils import plot_graph, transform_initial_x_data, transform_int_into_file_name
 from data_generators.TrainingDataGeneratorANN import TrainingDataGeneratorANN
+tf.config.run_functions_eagerly(True)
 
 
 @dataclass(kw_only=True)
@@ -42,7 +43,7 @@ class VectorModelANN:
         model.compile(
             optimizer = 'adam', 
             loss=tf.keras.losses.CategoricalCrossentropy(from_logits=True),
-            metrics = ['accuracy']
+            metrics = ['accuracy'],
         )
 
         return model
@@ -79,12 +80,21 @@ class VectorModelANN:
         plot_graph(history, "ann_plot")
 
 
-    def evaluate_image(self, image) -> None:
+    # @TODO: Must refactor this later
+    def evaluate_video(self, vid) -> None:
         model = self.create_model()
         model.load_weights(self._checkpoint_path).expect_partial()
-        data_image = TrainingDataGeneratorANN(vid=image).generate_data_image()
 
-        data_image = transform_initial_x_data(data_image)
+        data_image = TrainingDataGeneratorANN(vid=vid)
+        data_image = data_image.generate_data()
+        v = []
+        v.append(data_image)
+
+        data_image = transform_initial_x_data(v)
         data_image = np.array(data_image)
 
-        return model.predict(data_image)
+        pred = model.predict(data_image)[0]
+        max_val = max(pred)
+        max_idx = pred.tolist().index(max_val)
+        return transform_int_into_file_name(max_idx)
+

@@ -8,7 +8,7 @@ from models.VectorModelANN import VectorModelANN
 from models.Model3DCNN import Model3DCNN
 from models.PictureModelCNN import PictureModelCNN
 import os
-from utils.utils import transfor_file_name_into_int
+from utils.utils import transform_file_name_into_int
 from helpers.helpers import TrainerANNData, Trainer3DCNNData, TrainerCNNData
 from helpers.enums import TrainerEnum
 
@@ -80,14 +80,14 @@ class ControllerClass:
                 )
                 for _ in range(len(x_train_slice)):
                     y_training_data.append(
-                        transfor_file_name_into_int(filename)
+                        transform_file_name_into_int(filename)
                     )
             else:
                 x_training_data.append(
                     x_train_slice
                 )
                 y_training_data.append(
-                    transfor_file_name_into_int(filename)
+                    transform_file_name_into_int(filename)
                 )
 
         return x_training_data, y_training_data
@@ -129,5 +129,5 @@ class ControllerClass:
 
 
     @benchmark
-    def evaluate_ann_image(self, image: str) -> list:
-        return self.__ann_model.evaluate_image(image)
+    def evaluate_ann_video(self, image: str) -> list:
+        return self.__ann_model.evaluate_video(image)
