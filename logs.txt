@@ -7,3 +7,8 @@ Execution of function SAVE_CNN took 0.13794350624084473 seconds.
 Execution of function GATHER_TRAINING_DATA took 2147.643176794052 seconds.
 Execution of function TRAIN_ANN took 5.881568431854248 seconds.
 Execution of function SAVE_ANN took 0.049321651458740234 seconds.
+Execution of function GATHER_TRAINING_DATA took 153.72103571891785 seconds.
+Execution of function GATHER_TRAINING_DATA took 153.22294521331787 seconds.
+Execution of function GATHER_TRAINING_DATA took 153.43984174728394 seconds.
+Execution of function TRAIN_3D_CNN took 3663.1654374599457 seconds.
+Execution of function SAVE_3D_CNN took 0.13879084587097168 seconds.

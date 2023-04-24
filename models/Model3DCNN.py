@@ -61,20 +61,6 @@ class Model3DCNN:
             tf.keras.layers.Dense(256, activation='relu', kernel_initializer='he_uniform'),
             tf.keras.layers.Dense(9, activation='softmax')
         ])
-
-        # model = Sequential()
-        # model.add(Conv3D(32, kernel_size=(3, 3, 3), activation='relu', kernel_initializer='he_uniform', input_shape=(16, self._height_picture, self._width_picture, 1)))
-        # model.add(MaxPooling3D(pool_size=(2, 2, 2)))
-        # model.add(BatchNormalization(center=True, scale=True))
-        # model.add(Dropout(0.5))
-        # model.add(Conv3D(64, kernel_size=(3, 3, 3), activation='relu', kernel_initializer='he_uniform'))
-        # model.add(MaxPooling3D(pool_size=(2, 2, 2)))
-        # model.add(BatchNormalization(center=True, scale=True))
-        # model.add(Dropout(0.5))
-        # model.add(Flatten())
-        # model.add(Dense(256, activation='relu', kernel_initializer='he_uniform'))
-        # model.add(Dense(256, activation='relu', kernel_initializer='he_uniform'))
-        # model.add(Dense(10, activation='softmax'))
         
         model.compile(
             optimizer=tf.keras.optimizers.Adam(),
@@ -106,7 +92,8 @@ class Model3DCNN:
             shuffle=True
         )
         
-        history = self.__model.fit(x_train_data, y_train_data, epochs=self._epochs, batch_size=self._batch_size)
+        # Used CPU training
+        history = self.__model.fit(x_train_data, y_train_data, epochs=self._epochs, batch_size=self._batch_size, use_multiprocessing=True)
 
         plot_graph(history, "cnn_3d_model")
 
