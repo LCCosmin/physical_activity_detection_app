@@ -1,102 +1,126 @@
-from utils.constants import WIDTH_3D_CNN, HEIGHT_3D_CNN
+from typing import Optional, Tuple
+from utils.constants import WIDTH_3D_CNN, HEIGHT_3D_CNN, MIN_NUMBER_OF_FRAMES_IN_3D_CNN
 from dataclasses import dataclass, field
-from utils.utils import Conv2Plus1D, ResizeVideo, add_residual_block
+from utils.utils import Conv2Plus1D, ResizeVideo, add_residual_block, plot_graph
 import keras
 from keras import layers
 from sklearn.model_selection import train_test_split
 import numpy as np
-
+import tensorflow as tf
 from time import sleep
+import cv2
+from keras.layers import Dense, Flatten, Conv3D, MaxPooling3D, Dropout, BatchNormalization
+from keras.models import Sequential
+
 
 
 @dataclass(kw_only=True)
 class Model3DCNN:
-  _width_3d_cnn: int = WIDTH_3D_CNN
-  _height_3d_cnn: int = HEIGHT_3D_CNN
-  _epochs_no: int = 256
-  _batch_size: int = 32
-  _checkpoint_path: str = field(init=False)
-  _training_folder: str = field(init=False)
-  __model: keras.Model = field(init=False)
+    _width_picture: int = WIDTH_3D_CNN
+    _height_picture: int = HEIGHT_3D_CNN
+    _batch_size: int = 16
+    _epochs: int = 10
+    _checkpoint_path: str = field(init=False)
+    __model: Optional[tf.keras.models.Sequential] = field(init=False)
 
 
-  def __post_init__(self) -> None:
-    self._training_folder = "./training_data_vector_model_cnn"
-    self._checkpoint_path = "./brains/cnn_3d_brain/vector_3d_model_brain.ckpt"
-    self.__model = self.create_model()
-
-
-  def create_model(self) -> keras.Model:
-    input_shape = (None, 10, self._height_3d_cnn, self._width_3d_cnn, 3)
-    input = layers.Input(shape=(input_shape[1:]))
-    x = input
-
-    x = Conv2Plus1D(filters=16, kernel_size=(3, 7, 7), padding='same')(x)
-    x = layers.BatchNormalization()(x)
-    x = layers.ReLU()(x)
-    x = ResizeVideo(self._height_3d_cnn // 2, self._width_3d_cnn // 2)(x)
-
-    # Block 1
-    x = add_residual_block(x, 16, (3, 3, 3))
-    x = ResizeVideo(self._height_3d_cnn // 4, self._width_3d_cnn // 4)(x)
-
-    # Block 2
-    x = add_residual_block(x, 32, (3, 3, 3))
-    x = ResizeVideo(self._height_3d_cnn // 8, self._width_3d_cnn // 8)(x)
-
-    # Block 3
-    x = add_residual_block(x, 64, (3, 3, 3))
-    x = ResizeVideo(self._height_3d_cnn // 16, self._width_3d_cnn // 16)(x)
-
-    # Block 4
-    x = add_residual_block(x, 128, (3, 3, 3))
-
-    x = layers.GlobalAveragePooling3D()(x)
-    x = layers.Flatten()(x)
-    x = layers.Dense(10)(x)
-
-    model = keras.Model(input, x)
-    
-    model.compile(
-      loss = keras.losses.SparseCategoricalCrossentropy(from_logits=True), 
-      optimizer = keras.optimizers.Adam(learning_rate = 0.0001), 
-      metrics = ['accuracy']
-    )
-
-    return model
-
-
-  def save_model(self) -> None:
-    self.__model.save_weights(self._checkpoint_path)
+    def __post_init__(self) -> None:
+        self._checkpoint_path = "./brains/cnn_3d_brain/cnn_3d_model_brain.ckpt"
+        self.__model = self.create_model()
     
   
-  def train_model(self, x_training_data: list, y_training_data: list) -> None:
-    print("INFO:3D_MODEL_CNN: Starting the training protocol ...")
+    def normalize(self, img):
+        img = cv2.resize(img, (self._width_picture, self._height_picture), interpolation = cv2.INTER_AREA)
+        img = cv2.GaussianBlur(img, (1,1), 0)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        img = img / 255
 
-    
-    for idx, elem in enumerate(x_training_data):
-      x_training_data[idx] = np.hstack(x_training_data[idx])
-    y_training_data = np.array(y_training_data)
+        return img
+  
 
-    
+    def create_model(self) -> tf.keras.models.Sequential:
+        model = tf.keras.Sequential([
+            tf.keras.layers.Conv3D(32, (3, 3, 3), activation='relu', input_shape=(MIN_NUMBER_OF_FRAMES_IN_3D_CNN, self._height_picture, self._width_picture, 1)),
+            tf.keras.layers.MaxPooling3D((2, 2, 2)),
+            tf.keras.layers.BatchNormalization(center=True, scale=True),
+            tf.keras.layers.Dropout(0.1),
+            tf.keras.layers.Conv3D(64, (3, 3, 3), activation='relu'),
+            tf.keras.layers.MaxPooling3D((2, 2, 2)),
+            tf.keras.layers.BatchNormalization(center=True, scale=True),
+            tf.keras.layers.Dropout(0.1),
+            tf.keras.layers.Conv3D(128, (3, 3, 3), activation='relu'),
+            tf.keras.layers.MaxPooling3D((2, 2, 2)),
+            tf.keras.layers.BatchNormalization(center=True, scale=True),
+            tf.keras.layers.Dropout(0.1),
+            tf.keras.layers.Conv3D(256, (3, 3, 3), activation='relu'),
+            tf.keras.layers.MaxPooling3D((2, 2, 2)),
+            tf.keras.layers.BatchNormalization(center=True, scale=True),
+            tf.keras.layers.Dropout(0.1),
+            tf.keras.layers.Flatten(),
+            tf.keras.layers.Dense(256, activation='relu', kernel_initializer='he_uniform'),
+            tf.keras.layers.Dense(256, activation='relu', kernel_initializer='he_uniform'),
+            tf.keras.layers.Dense(9, activation='softmax')
+        ])
 
-    x_train, x_test, y_train, y_test =(
-        train_test_split(
-            x_training_data, y_training_data, 
-            test_size = 0.2,
-            shuffle=(True)
+        # model = Sequential()
+        # model.add(Conv3D(32, kernel_size=(3, 3, 3), activation='relu', kernel_initializer='he_uniform', input_shape=(16, self._height_picture, self._width_picture, 1)))
+        # model.add(MaxPooling3D(pool_size=(2, 2, 2)))
+        # model.add(BatchNormalization(center=True, scale=True))
+        # model.add(Dropout(0.5))
+        # model.add(Conv3D(64, kernel_size=(3, 3, 3), activation='relu', kernel_initializer='he_uniform'))
+        # model.add(MaxPooling3D(pool_size=(2, 2, 2)))
+        # model.add(BatchNormalization(center=True, scale=True))
+        # model.add(Dropout(0.5))
+        # model.add(Flatten())
+        # model.add(Dense(256, activation='relu', kernel_initializer='he_uniform'))
+        # model.add(Dense(256, activation='relu', kernel_initializer='he_uniform'))
+        # model.add(Dense(10, activation='softmax'))
+        
+        model.compile(
+            optimizer=tf.keras.optimizers.Adam(),
+            loss=tf.keras.losses.CategoricalCrossentropy(),
+            metrics=[tf.keras.metrics.Accuracy()]
         )
-    )
+        
+        return model
+    
 
-    print(len(x_train))
-    print(len(y_train))
-    # print(x_training_data)
-    # print(x_training_data)
-    sleep(5)
-    history = self.__model.fit(x_train, y_train, epochs = self._epochs_no, batch_size = self._batch_size)
+    def save_model(self) -> None:
+        self.__model.save_weights(self._checkpoint_path)
 
-    _, accuracy = self.__model.evaluate(x_test, y_test, verbose=2)
 
-    print(f"INFO:SHOWING RESULTS OF THE TRAINING: {self.__model.predict(x_test)[0]}")
-    print(f"INFO:3D_MODEL_CNN: Accuracy : {accuracy}")
-    print("INFO:3D_MODEL_CNN: Training done ..")
+    def load_model(self) -> None:
+        self.__model.load_weights(self._checkpoint_path)
+
+
+    def train_model(self, x_train_data: list, y_train_data: list) -> None:
+        print("INFO:TRAIN_3D_CNN: TRAINING IS STARTING...")
+        x_train_data = [x.reshape(MIN_NUMBER_OF_FRAMES_IN_3D_CNN, self._height_picture, self._width_picture, 1) for x in x_train_data]
+        x_train_data = np.expand_dims(x_train_data, axis=-1)
+        y_train_data = np.array(y_train_data, dtype=int)
+
+        x_train_data, x_test, y_train_data, y_test = train_test_split(
+            x_train_data,
+            y_train_data,
+            test_size=0.3,
+            shuffle=True
+        )
+        
+        history = self.__model.fit(x_train_data, y_train_data, epochs=self._epochs, batch_size=self._batch_size)
+
+        plot_graph(history, "cnn_3d_model")
+
+        _, accuracy = self.__model.evaluate(x_test, y_test, verbose=2)
+
+        print(f"INFO:SHOWING RESULTS OF THE TRAINING: {self.__model.predict(x_test)[0]}")
+        print(f"INFO:MODEL_CNN: Accuracy : {accuracy}")
+        print("INFO:MODEL_CNN: Training done ..")
+
+
+    def evaluate(self, test_dataset: tf.data.Dataset) -> Tuple[float, float]:
+        loss, acc = self.__model.evaluate(test_dataset)
+        return loss, acc
+
+
+    def predict(self, x: tf.Tensor) -> tf.Tensor:
+        return self.__model.predict(x)

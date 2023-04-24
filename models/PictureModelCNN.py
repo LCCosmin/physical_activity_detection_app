@@ -18,7 +18,6 @@ class PictureModelCNN:
     _epochs_no: int = 1024
     _batch_size: int = 256
     _checkpoint_path: str = field(init=False)
-    _training_folder: str = field(init=False)
     __model: tf.keras.models.Sequential = field(init=False)
 
     
@@ -66,6 +65,7 @@ class PictureModelCNN:
 
 
     def train_model(self, x_training_data: list, y_training_data: list) -> None:
+        print("INFO:TRAIN_CNN: TRAINING IS STARTING...")
         x_training_data, x_test, y_training_data, y_test =(
             train_test_split(
                 np.array(x_training_data, dtype=(float)).reshape(-1, self._width_picture * self._height_picture),

@@ -1,5 +1,5 @@
 from controller.Controller import ControllerClass
-from utils.utils import transform_initial_x_data, cut_too_short_training_data
+from utils.utils import transform_initial_x_data, cut_too_short_training_data, cut_too_long_training_data
 import cv2
 import os
 from utils.constants import (
@@ -55,14 +55,19 @@ def main():
     # print(f"Predict result for ANN is: {controller.evaluate_ann_video('/home/cosmin/Desktop/licenta/physical_activity_detection_app/chest_79.mp4')}")
 
     # 3D CNN
-    # x_train_data_3d_cnn, y_train_data_3d_cnn = controller.gather_training_data(TrainerEnum.CNN_3D)
-    # x_train_data_3d_cnn, y_train_data_3d_cnn = cut_too_short_training_data(
-    #     x_training_data=x_train_data_3d_cnn,
-    #     y_training_data=y_train_data_3d_cnn, 
-    #     limiter=MIN_NUMBER_OF_FRAMES_IN_3D_CNN
-    #     signature=TrainerEnum.CNN_3D
-    # )
-    # controller.train_3d_cnn(x_train_data_3d_cnn, y_train_data_3d_cnn)
+    x_train_data_3d_cnn, y_train_data_3d_cnn = controller.gather_training_data(TrainerEnum.CNN_3D)
+    x_train_data_3d_cnn, y_train_data_3d_cnn = cut_too_short_training_data(
+        x_training_data=x_train_data_3d_cnn,
+        y_training_data=y_train_data_3d_cnn, 
+        limiter=MIN_NUMBER_OF_FRAMES_IN_3D_CNN,
+        signature=TrainerEnum.CNN_3D
+    )
+    x_train_data_3d_cnn, y_train_data_3d_cnn = cut_too_long_training_data(
+        x_training_data=x_train_data_3d_cnn,
+        y_training_data=y_train_data_3d_cnn, 
+        limiter=MIN_NUMBER_OF_FRAMES_IN_3D_CNN,
+    )
+    controller.train_3d_cnn(x_train_data_3d_cnn, y_train_data_3d_cnn)
 
     # CNN
     # x_train_data_cnn, y_train_data_cnn = controller.gather_training_data(TrainerEnum.CNN)

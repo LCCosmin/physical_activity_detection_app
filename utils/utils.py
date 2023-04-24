@@ -121,7 +121,7 @@ def cut_too_short_training_data(
 
     for idx, elem in enumerate(x_training_data):
         if len(elem) >= limiter:
-            if TrainerEnum.ANN.value == signature.value:
+            if TrainerEnum.ANN.value == signature.value or TrainerEnum.CNN_3D.value == signature.value:
                new_x_data.append(x_training_data[idx])
             else:
               new_x_data.append(transform_npndarray_list_to_list(x_training_data[idx]))
@@ -130,10 +130,29 @@ def cut_too_short_training_data(
     return new_x_data, new_y_data
 
 
+def cut_too_long_training_data(
+      x_training_data: list,
+      y_training_data:list, 
+      limiter: int,
+  ) -> Union[list, list]:
+    new_x_data = []
+    new_y_data = []
+
+    for idx, elem in enumerate(x_training_data):
+        if len(elem) >= limiter:
+            new_x_data.append(x_training_data[idx][0:limiter])
+            new_y_data.append(y_training_data[idx])
+
+    return new_x_data, new_y_data
+
+
 def plot_graph(history: Any, name: str) -> None:
     plt.plot(history.history['loss'])
+    plt.savefig(f"./{name}_loss.png")
+    plt.clf()
     plt.plot(history.history['accuracy'])
-    plt.savefig(f"./{name}.png")
+    plt.savefig(f"./{name}_accuracy.png")
+    plt.clf()
 
 
 # 3D Model utils
