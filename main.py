@@ -68,6 +68,7 @@ def main():
         limiter=MIN_NUMBER_OF_FRAMES_IN_3D_CNN,
     )
     controller.train_3d_cnn(x_train_data_3d_cnn, y_train_data_3d_cnn)
+    controller.save_3d_cnn()
 
     # CNN
     # x_train_data_cnn, y_train_data_cnn = controller.gather_training_data(TrainerEnum.CNN)

@@ -96,3 +96,6 @@ Execution of function GATHER_TRAINING_DATA took 0.35821533203125 seconds.
 Execution of function GATHER_TRAINING_DATA took 0.35784029960632324 seconds.
 Execution of function GATHER_TRAINING_DATA took 0.35724472999572754 seconds.
 Execution of function TRAIN_3D_CNN took 4.056191682815552 seconds.
+Execution of function GATHER_TRAINING_DATA took 152.91307640075684 seconds.
+Execution of function TRAIN_3D_CNN took 39.17090702056885 seconds.
+Execution of function SAVE_3D_CNN took 0.06766271591186523 seconds.
