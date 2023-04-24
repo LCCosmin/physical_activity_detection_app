@@ -35,7 +35,6 @@ renamed-files/
 backup/
 training_data_picture_model_cnn/
 .vscode/
-*.png
 *.txt
 
 # PyInstaller
