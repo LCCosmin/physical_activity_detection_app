@@ -129,5 +129,5 @@ class ControllerClass:
 
 
     @benchmark
-    def evaluate_ann_video(self, image: str) -> str:
-        return self.__ann_model.evaluate_video(image)
+    def evaluate_ann_video(self, video: str) -> str:
+        return self.__ann_model.evaluate_video(video)

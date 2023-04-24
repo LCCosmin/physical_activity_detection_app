@@ -1,6 +1,7 @@
 from typing import Union
 import cv2
 import numpy as np
+import os
 import mediapipe as mp
 
 class TrainingDataGeneratorANN:
@@ -41,7 +42,7 @@ class TrainingDataGeneratorANN:
             smooth_landmarks = True ) as pose:
             
             if type(self.__vid) is str:
-                self.__vid = cv2.VideoCapture(self.__vid)
+                self.__vid = cv2.VideoCapture(os.getcwd()  + "/training data/" + self.__vid)
             else:
                 self.__vid = cv2.VideoCapture(self.__vid)
             
