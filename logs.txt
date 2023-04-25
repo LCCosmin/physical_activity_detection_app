@@ -12,3 +12,13 @@ Execution of function GATHER_TRAINING_DATA took 153.22294521331787 seconds.
 Execution of function GATHER_TRAINING_DATA took 153.43984174728394 seconds.
 Execution of function TRAIN_3D_CNN took 3663.1654374599457 seconds.
 Execution of function SAVE_3D_CNN took 0.13879084587097168 seconds.
+Execution of function GATHER_TRAINING_DATA took 152.9909384250641 seconds.
+Execution of function GATHER_TRAINING_DATA took 152.85352730751038 seconds.
+Execution of function GATHER_TRAINING_DATA took 153.3068516254425 seconds.
+Execution of function GATHER_TRAINING_DATA took 151.8726212978363 seconds.
+Execution of function GATHER_TRAINING_DATA took 152.56817030906677 seconds.
+Execution of function GATHER_TRAINING_DATA took 145.40203380584717 seconds.
+Execution of function GATHER_TRAINING_DATA took 152.14383697509766 seconds.
+Execution of function GATHER_TRAINING_DATA took 152.902174949646 seconds.
+Execution of function TRAIN_3D_CNN took 7320.769052505493 seconds.
+Execution of function SAVE_3D_CNN took 0.13442754745483398 seconds.

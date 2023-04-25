@@ -19,7 +19,7 @@ class Model3DCNN:
     _width_picture: int = WIDTH_3D_CNN
     _height_picture: int = HEIGHT_3D_CNN
     _batch_size: int = 32
-    _epochs: int = 256
+    _epochs: int = 512
     _checkpoint_path: str = field(init=False)
     __model: Optional[tf.keras.models.Sequential] = field(init=False)
 
