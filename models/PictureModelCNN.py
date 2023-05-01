@@ -15,8 +15,8 @@ from utils.utils import plot_graph, transform_int_into_file_name
 class PictureModelCNN:
     _width_picture: int = WIDTH_PICTURE_CNN
     _height_picture: int = HEIGHT_PICTURE_CNN
-    _epochs_no: int = 1024
-    _batch_size: int = 256
+    _epochs_no: int = 16
+    _batch_size: int = 16
     _checkpoint_path: str = field(init=False)
     __model: tf.keras.models.Sequential = field(init=False)
 

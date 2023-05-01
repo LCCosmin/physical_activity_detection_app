@@ -1,5 +1,5 @@
 from controller.Controller import ControllerClass
-from utils.utils import transform_initial_x_data, cut_too_short_training_data, cut_too_long_training_data
+from utils.utils import transform_initial_x_data, cut_too_short_training_data, cut_too_long_training_data, create_graph_classes
 import cv2
 import os
 from utils.constants import (
@@ -50,6 +50,7 @@ def main():
     #     limiter=ANN_SIZE*6,
     #     signature=TrainerEnum.ANN
     # )
+    # create_graph_classes(y_train_data_ann, "ann")
     # controller.train_ann(x_train_data_ann, y_train_data_ann)
     # controller.save_ann()
     # print(f"Predict result for ANN is: {controller.evaluate_ann_video('/home/cosmin/Desktop/licenta/physical_activity_detection_app/chest_79.mp4')}")
@@ -67,11 +68,15 @@ def main():
         y_training_data=y_train_data_3d_cnn, 
         limiter=MIN_NUMBER_OF_FRAMES_IN_3D_CNN,
     )
+    create_graph_classes(y_train_data_3d_cnn, "cnn_3d")
     controller.train_3d_cnn(x_train_data_3d_cnn, y_train_data_3d_cnn)
     controller.save_3d_cnn()
 
     # CNN
+    # create_graph_classes([[0,1]], "cnn")
     # x_train_data_cnn, y_train_data_cnn = controller.gather_training_data(TrainerEnum.CNN)
+    # create_graph_classes(y_train_data_cnn, "cnn")
+    # print(f"INFO: LENGTH OF DATASET: {len(y_train_data_cnn)}")
     # controller.train_cnn(x_train_data_cnn, y_train_data_cnn)
     # controller.save_cnn()
     # print(f"Predict result for CNN is: {controller.evaluate_cnn_image('/home/cosmin/Desktop/licenta/physical_activity_detection_app/333.png')}")

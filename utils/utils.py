@@ -146,6 +146,39 @@ def cut_too_long_training_data(
     return new_x_data, new_y_data
 
 
+def create_graph_classes(y_train_data: list, name: str) -> None:
+  data = {
+      "ABS": 0,
+      "BACK": 0,
+      "BUTT": 0,
+      "CHEST": 0,
+      "FOREARM": 0,
+      "LEGS": 0,
+      "SHOULDER": 0,
+      "TRICEPS": 0,
+      "BICEPS": 0,
+   }
+
+  for elem in y_train_data:
+      idx = elem.index(1)
+      exercise_name = transform_int_into_file_name(idx)
+      data[exercise_name] = data[exercise_name] + 1
+
+  plot_names = list(data.keys())
+  plot_values = list(data.values())
+
+  plt.figure(figsize = (10, 5))
+  plt.bar(plot_names, plot_values)
+
+  for i in range(len(plot_names)):
+      plt.text(i, plot_values[i], plot_values[i])
+
+  plt.xlabel(f"Classes for {name.upper()}")
+  plt.ylabel("Number of elements")
+  plt.savefig(f"./{name}_classes_diagram.png")
+  plt.clf()
+
+
 def plot_graph(history: Any, name: str) -> None:
     plt.plot(history.history['loss'])
     plt.savefig(f"./{name}_loss.png")

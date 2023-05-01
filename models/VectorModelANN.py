@@ -12,8 +12,8 @@ from data_generators.TrainingDataGeneratorANN import TrainingDataGeneratorANN
 @dataclass(kw_only=True)
 class VectorModelANN:
     _vector_size: int = ANN_SIZE * 6
-    _epochs_no: int = 1028
-    _batch_size: int = 128
+    _epochs_no: int = 16
+    _batch_size: int = 16
     _checkpoint_path: str = field(init=False)
     _training_folder: str = field(init=False)
     __model: tf.keras.models.Sequential = field(init=False)
