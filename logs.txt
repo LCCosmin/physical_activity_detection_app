@@ -47,3 +47,16 @@ Execution of function SAVE_ANN took 0.023372411727905273 seconds.
 Execution of function GATHER_TRAINING_DATA took 559.3556292057037 seconds.
 Execution of function TRAIN_3D_CNN took 6800.764453172684 seconds.
 Execution of function SAVE_3D_CNN took 0.584589958190918 seconds.
+Execution of function GATHER_TRAINING_DATA took 518.3257875442505 seconds.
+Execution of function GATHER_TRAINING_DATA took 518.0118567943573 seconds.
+Execution of function GATHER_TRAINING_DATA took 566.5508344173431 seconds.
+Execution of function GATHER_TRAINING_DATA took 518.8146302700043 seconds.
+Execution of function GATHER_TRAINING_DATA took 1222.0825197696686 seconds.
+Execution of function GATHER_TRAINING_DATA took 864.5182054042816 seconds.
+Execution of function GATHER_TRAINING_DATA took 614.4808931350708 seconds.
+Execution of function GATHER_TRAINING_DATA took 582.1431241035461 seconds.
+Execution of function TRAIN_3D_CNN took 5945.269857406616 seconds.
+Execution of function SAVE_3D_CNN took 1.6026630401611328 seconds.
+Execution of function GATHER_TRAINING_DATA took 579.0863127708435 seconds.
+Execution of function TRAIN_3D_CNN took 11988.257727384567 seconds.
+Execution of function SAVE_3D_CNN took 1.0211637020111084 seconds.

@@ -8,7 +8,7 @@ from models.VectorModelANN import VectorModelANN
 from models.Model3DCNN import Model3DCNN
 from models.PictureModelCNN import PictureModelCNN
 import os
-from utils.utils import transform_file_name_into_int
+from utils.utils import transform_file_name_into_int, transform_int_into_file_name
 from helpers.helpers import TrainerANNData, Trainer3DCNNData, TrainerCNNData
 from helpers.enums import TrainerEnum
 
@@ -66,29 +66,46 @@ class ControllerClass:
                 height_image=self.__cnn_data.height_cnn,
             )
 
+        data = {
+            "ABS": 0,
+            "BACK": 0,
+            "BUTT": 0,
+            "CHEST": 0,
+            "FOREARM": 0,
+            "LEGS": 0,
+            "SHOULDER": 0,
+            "TRICEPS": 0,
+            "BICEPS": 0,
+        }
+
         for filename in os.listdir(os.getcwd()  + "/training data"):         
             print(f"INFO:GATHER_DATA_{trainer_enum.value}: Processing file {counter_files} with the name {filename}")
+            idx = transform_file_name_into_int(filename).index(1)
+            exercise_name = transform_int_into_file_name(idx)
+            data[exercise_name] = data[exercise_name] + 1
             counter_files+=1
 
-            trainer.update_new_obj(filename)
+            if data[exercise_name] <=55:
+                trainer.update_new_obj(filename)
 
-            x_train_slice = trainer.generate_data()
+                x_train_slice = trainer.generate_data()
 
-            if trainer_enum.value == TrainerEnum.CNN.value:
-                x_training_data.extend(
-                    x_train_slice
-                )
-                for _ in range(len(x_train_slice)):
+                if trainer_enum.value == TrainerEnum.CNN.value:
+                    x_training_data.extend(
+                        x_train_slice
+                    )
+                    for _ in range(len(x_train_slice)):
+                        y_training_data.append(
+                            transform_file_name_into_int(filename)
+                        )
+                else:
+                    x_training_data.append(
+                        x_train_slice
+                    )
                     y_training_data.append(
                         transform_file_name_into_int(filename)
                     )
-            else:
-                x_training_data.append(
-                    x_train_slice
-                )
-                y_training_data.append(
-                    transform_file_name_into_int(filename)
-                )
+                
 
         return x_training_data, y_training_data
 
