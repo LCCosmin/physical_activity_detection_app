@@ -36,6 +36,7 @@ backup/
 training_data_picture_model_cnn/
 .vscode/
 *.txt
+predict_data/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
