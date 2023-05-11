@@ -53,24 +53,46 @@ def main():
     # create_graph_classes(y_train_data_ann, "ann")
     # controller.train_ann(x_train_data_ann, y_train_data_ann)
     # controller.save_ann()
-    # print(f"Predict result for ANN is: {controller.evaluate_ann_video('/home/cosmin/Desktop/licenta/physical_activity_detection_app/chest_79.mp4')}")
+    print("\n\nANN")
+    print("\n\nUNSEEN EXERCISES PREDICTION:\n\n")
+    print(f"Predict result (LEGS) for ANN is: {controller.evaluate_ann_video('/home/cosmin/Desktop/licenta/x/physical_activity_detection_app/predict_data/squats.mp4')}")
+    print(f"Predict result (CHEST) for ANN is: {controller.evaluate_ann_video('/home/cosmin/Desktop/licenta/x/physical_activity_detection_app/predict_data/pushup.mp4')}")
+    print(f"Predict result (ABS) for ANN is: {controller.evaluate_ann_video('/home/cosmin/Desktop/licenta/x/physical_activity_detection_app/predict_data/plank.mp4')}")
+    print(f"Predict result (ABS) for ANN is: {controller.evaluate_ann_video('/home/cosmin/Desktop/licenta/x/physical_activity_detection_app/predict_data/abs.mp4')}")
+    print("\n\nSEEN EXERCISES PREDICTION:\n\n")
+    print(f"Predict result (ABS) for ANN is: {controller.evaluate_ann_video('/home/cosmin/Desktop/licenta/x/physical_activity_detection_app/predict_data/seen_abs.mp4')}")
+    print(f"Predict result (BACK) for ANN is: {controller.evaluate_ann_video('/home/cosmin/Desktop/licenta/x/physical_activity_detection_app/predict_data/seen_back.mp4')}")
+    print(f"Predict result (SHOULDER) for ANN is: {controller.evaluate_ann_video('/home/cosmin/Desktop/licenta/x/physical_activity_detection_app/predict_data/seen_shoulder.mp4')}")
+    print(f"Predict result (FOREARM) for ANN is: {controller.evaluate_ann_video('/home/cosmin/Desktop/licenta/x/physical_activity_detection_app/predict_data/seen_forearm.mp4')}")
 
     # 3D CNN
-    x_train_data_3d_cnn, y_train_data_3d_cnn = controller.gather_training_data(TrainerEnum.CNN_3D)
-    x_train_data_3d_cnn, y_train_data_3d_cnn = cut_too_short_training_data(
-        x_training_data=x_train_data_3d_cnn,
-        y_training_data=y_train_data_3d_cnn, 
-        limiter=MIN_NUMBER_OF_FRAMES_IN_3D_CNN,
-        signature=TrainerEnum.CNN_3D
-    )
-    x_train_data_3d_cnn, y_train_data_3d_cnn = cut_too_long_training_data(
-        x_training_data=x_train_data_3d_cnn,
-        y_training_data=y_train_data_3d_cnn, 
-        limiter=MIN_NUMBER_OF_FRAMES_IN_3D_CNN,
-    )
-    create_graph_classes(y_train_data_3d_cnn, "cnn_3d")
-    controller.train_3d_cnn(x_train_data_3d_cnn, y_train_data_3d_cnn)
-    controller.save_3d_cnn()
+    # x_train_data_3d_cnn, y_train_data_3d_cnn = controller.gather_training_data(TrainerEnum.CNN_3D)
+    # x_train_data_3d_cnn, y_train_data_3d_cnn = cut_too_short_training_data(
+    #     x_training_data=x_train_data_3d_cnn,
+    #     y_training_data=y_train_data_3d_cnn, 
+    #     limiter=MIN_NUMBER_OF_FRAMES_IN_3D_CNN,
+    #     signature=TrainerEnum.CNN_3D
+    # )
+    # x_train_data_3d_cnn, y_train_data_3d_cnn = cut_too_long_training_data(
+    #     x_training_data=x_train_data_3d_cnn,
+    #     y_training_data=y_train_data_3d_cnn, 
+    #     limiter=MIN_NUMBER_OF_FRAMES_IN_3D_CNN,
+    # )
+    # create_graph_classes(y_train_data_3d_cnn, "cnn_3d")
+    # controller.train_3d_cnn(x_train_data_3d_cnn, y_train_data_3d_cnn)
+    # controller.save_3d_cnn()
+    print("\n\n3D CNN")
+    print("\n\nUNSEEN EXERCISES PREDICTION:\n\n")
+    print(f"Predict result (LEGS) for 3D CNN is: {controller.evaluate_3d_cnn_video('/home/cosmin/Desktop/licenta/x/physical_activity_detection_app/predict_data/squats.mp4')}")
+    print(f"Predict result (CHEST) for 3D CNN is: {controller.evaluate_3d_cnn_video('/home/cosmin/Desktop/licenta/x/physical_activity_detection_app/predict_data/pushup.mp4')}")
+    print(f"Predict result (ABS) for 3D CNN is: {controller.evaluate_3d_cnn_video('/home/cosmin/Desktop/licenta/x/physical_activity_detection_app/predict_data/plank.mp4')}")
+    print(f"Predict result (ABS) for 3D CNN is: {controller.evaluate_3d_cnn_video('/home/cosmin/Desktop/licenta/x/physical_activity_detection_app/predict_data/abs.mp4')}")
+    print("\n\SEEN EXERCISES PREDICTION:\n\n")
+    print(f"Predict result (ABS) for 3D CNN is: {controller.evaluate_3d_cnn_video('/home/cosmin/Desktop/licenta/x/physical_activity_detection_app/predict_data/seen_abs.mp4')}")
+    print(f"Predict result (BACK) for 3D CNN is: {controller.evaluate_3d_cnn_video('/home/cosmin/Desktop/licenta/x/physical_activity_detection_app/predict_data/seen_back.mp4')}")
+    print(f"Predict result (SHOULDER) for 3D CNN is: {controller.evaluate_3d_cnn_video('/home/cosmin/Desktop/licenta/x/physical_activity_detection_app/predict_data/seen_shoulder.mp4')}")
+    print(f"Predict result (FOREARM) for 3D CNN is: {controller.evaluate_3d_cnn_video('/home/cosmin/Desktop/licenta/x/physical_activity_detection_app/predict_data/seen_forearm.mp4')}")
+
 
     # CNN
     # create_graph_classes([[0,1]], "cnn")
@@ -79,69 +101,80 @@ def main():
     # print(f"INFO: LENGTH OF DATASET: {len(y_train_data_cnn)}")
     # controller.train_cnn(x_train_data_cnn, y_train_data_cnn)
     # controller.save_cnn()
-    # print(f"Predict result for CNN is: {controller.evaluate_cnn_image('/home/cosmin/Desktop/licenta/physical_activity_detection_app/333.png')}")
-    
-from time import sleep
+    print("\n\nCNN")
+    print("\n\nUNSEEN EXERCISES PREDICTION:\n\n")
+    print(f"Predict result (LEGS) for CNN is: {controller.evaluate_cnn_image('/home/cosmin/Desktop/licenta/x/physical_activity_detection_app/predict_data/squats.png')}")
+    print(f"Predict result (CHEST) for CNN is: {controller.evaluate_cnn_image('/home/cosmin/Desktop/licenta/x/physical_activity_detection_app/predict_data/pushup.png')}")
+    print(f"Predict result (ABS) for CNN is: {controller.evaluate_cnn_image('/home/cosmin/Desktop/licenta/x/physical_activity_detection_app/predict_data/plank.png')}")
+    print(f"Predict result (ABS) for CNN is: {controller.evaluate_cnn_image('/home/cosmin/Desktop/licenta/x/physical_activity_detection_app/predict_data/abs.png')}")
+    print("\n\nSEEN EXERCISES PREDICTION:\n\n")
+    print(f"Predict result (ABS) for 3D CNN is: {controller.evaluate_cnn_image('/home/cosmin/Desktop/licenta/x/physical_activity_detection_app/predict_data/seen_abs.png')}")
+    print(f"Predict result (BACK) for 3D CNN is: {controller.evaluate_cnn_image('/home/cosmin/Desktop/licenta/x/physical_activity_detection_app/predict_data/seen_back.png')}")
+    print(f"Predict result (SHOULDER) for 3D CNN is: {controller.evaluate_cnn_image('/home/cosmin/Desktop/licenta/x/physical_activity_detection_app/predict_data/seen_shoulder.png')}")
+    print(f"Predict result (FOREARM) for 3D CNN is: {controller.evaluate_cnn_image('/home/cosmin/Desktop/licenta/x/physical_activity_detection_app/predict_data/seen_forearm.png')}")
 
-def test_video():
-    vid = f"{os.getcwd()}/training data/abs_1.mp4"
     
-    vid = cv2.VideoCapture(vid)
-    while vid.isOpened():
-        suc, img = vid.read()
+# from time import sleep
+
+# def test_video():
+#     vid = f"{os.getcwd()}/training data/abs_1.mp4"
+    
+#     vid = cv2.VideoCapture(vid)
+#     while vid.isOpened():
+#         suc, img = vid.read()
         
-        if suc == False:
-            break
+#         if suc == False:
+#             break
 
-        img = img.tolist()
-        print(f"suc: {type(suc)}")
-        print(f"img: {type(img)}")
+#         img = img.tolist()
+#         print(f"suc: {type(suc)}")
+#         print(f"img: {type(img)}")
 
-        cv2.imshow("d", img)
-        cv2.waitKey(0)
+#         cv2.imshow("d", img)
+#         cv2.waitKey(0)
         
-    print(os.getcwd())
-    vid.release()
-    cv2.destroyAllWindows()
+#     print(os.getcwd())
+#     vid.release()
+#     cv2.destroyAllWindows()
 
-def reverse_videos():
-    total_files = len([f for f in os.listdir("C:\\Users\\Cosmin\\Desktop\\licenta\\training data") if f.endswith("mp4")])
-    # Iterate over files of given type in input directory
-    for c, filename in enumerate([f for f in os.listdir("C:\\Users\\Cosmin\\Desktop\\licenta\\training data") if
-                                f.endswith("mp4")]):
-        print("Processing file '%s' (%s of %s)." % (filename, c+1,
-            total_files))
-        video = cv2.VideoCapture("C:\\Users\\Cosmin\\Desktop\\licenta\\training data\\" + filename)
-        # Gather info about input video
-        fps = int(video.get(cv2.CAP_PROP_FPS))
-        width = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
-        height = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
+# def reverse_videos():
+#     total_files = len([f for f in os.listdir("C:\\Users\\Cosmin\\Desktop\\licenta\\training data") if f.endswith("mp4")])
+#     # Iterate over files of given type in input directory
+#     for c, filename in enumerate([f for f in os.listdir("C:\\Users\\Cosmin\\Desktop\\licenta\\training data") if
+#                                 f.endswith("mp4")]):
+#         print("Processing file '%s' (%s of %s)." % (filename, c+1,
+#             total_files))
+#         video = cv2.VideoCapture("C:\\Users\\Cosmin\\Desktop\\licenta\\training data\\" + filename)
+#         # Gather info about input video
+#         fps = int(video.get(cv2.CAP_PROP_FPS))
+#         width = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
+#         height = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
-        # Define the codec and create VideoWriter object for output
-        fourcc = cv2.VideoWriter_fourcc(*"mp4v")
-        fn, ext = os.path.splitext(os.path.basename(filename))
-        out = cv2.VideoWriter("%s/%s_%s%s" % ("C:\\Users\\Cosmin\\Desktop\\licenta\\rev", fn, "rev_", ext),
-                            fourcc, fps, (width, height))
+#         # Define the codec and create VideoWriter object for output
+#         fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+#         fn, ext = os.path.splitext(os.path.basename(filename))
+#         out = cv2.VideoWriter("%s/%s_%s%s" % ("C:\\Users\\Cosmin\\Desktop\\licenta\\rev", fn, "rev_", ext),
+#                             fourcc, fps, (width, height))
 
-        # Flip video frame by frame and write to output file
-        while(video.isOpened()):
-            ret, frame = video.read()
-            if ret:
-                frame = cv2.flip(frame, 1)
-                out.write(frame)
-            else:
-                break
+#         # Flip video frame by frame and write to output file
+#         while(video.isOpened()):
+#             ret, frame = video.read()
+#             if ret:
+#                 frame = cv2.flip(frame, 1)
+#                 out.write(frame)
+#             else:
+#                 break
 
-    video.release()
-    out.release()
+#     video.release()
+#     out.release()
     
-def rename_files():
-    START = "chest_"
-    # Iterate over files of given type in input directory
-    for c, filename in enumerate([f for f in os.listdir("C:\\Users\\Cosmin\\Desktop\\licenta\\training data") if
-                                f.endswith("mp4")]):
-        new_file = START + str(c+1) + ".mp4"
-        os.rename("C:\\Users\\Cosmin\\Desktop\\licenta\\training data\\" + filename, "C:\\Users\\Cosmin\\Desktop\\licenta\\renamed-files\\" + new_file)
+# def rename_files():
+#     START = "chest_"
+#     # Iterate over files of given type in input directory
+#     for c, filename in enumerate([f for f in os.listdir("C:\\Users\\Cosmin\\Desktop\\licenta\\training data") if
+#                                 f.endswith("mp4")]):
+#         new_file = START + str(c+1) + ".mp4"
+#         os.rename("C:\\Users\\Cosmin\\Desktop\\licenta\\training data\\" + filename, "C:\\Users\\Cosmin\\Desktop\\licenta\\renamed-files\\" + new_file)
     
 if __name__ == "__main__":
     #rename_files()

@@ -2,6 +2,7 @@ import cv2
 from typing import Any
 import os
 import numpy as np
+from helpers.enums import TrainerAction
 
 
 class TrainingDataGeneratorCNN:
@@ -26,11 +27,11 @@ class TrainingDataGeneratorCNN:
         return img
 
     
-    def generate_data(self) -> list:
+    def generate_data(self, type_mode: TrainerAction) -> list:
         final_data = []
         count_frame = 0
 
-        if type(self.__vid) is str:
+        if TrainerAction.TRAIN == type_mode and type(self.__vid) is str:
             self.__vid = cv2.VideoCapture(os.getcwd()  + "/training data/" + self.__vid)
         else:
             self.__vid = cv2.VideoCapture(self.__vid)

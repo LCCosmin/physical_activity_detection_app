@@ -3,6 +3,8 @@ import cv2
 import numpy as np
 import os
 import mediapipe as mp
+from helpers.enums import TrainerAction
+
 
 class TrainingDataGeneratorANN:
     def __init__(
@@ -33,7 +35,7 @@ class TrainingDataGeneratorANN:
         return angle
 
 
-    def generate_data(self):
+    def generate_data(self, type_mode: TrainerAction):
         final_values_vector = []
         with self.__mp_pose.Pose(
             min_detection_confidence=self.__detection_confidence,
@@ -41,7 +43,7 @@ class TrainingDataGeneratorANN:
             model_complexity=self.__complexity,
             smooth_landmarks = True ) as pose:
             
-            if type(self.__vid) is str:
+            if TrainerAction.TRAIN == type_mode and type(self.__vid) is str:
                 self.__vid = cv2.VideoCapture(os.getcwd()  + "/training data/" + self.__vid)
             else:
                 self.__vid = cv2.VideoCapture(self.__vid)

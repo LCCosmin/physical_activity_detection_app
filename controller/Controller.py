@@ -10,7 +10,7 @@ from models.PictureModelCNN import PictureModelCNN
 import os
 from utils.utils import transform_file_name_into_int, transform_int_into_file_name
 from helpers.helpers import TrainerANNData, Trainer3DCNNData, TrainerCNNData
-from helpers.enums import TrainerEnum
+from helpers.enums import TrainerEnum, TrainerAction
 
 
 @dataclass
@@ -88,7 +88,7 @@ class ControllerClass:
             if data[exercise_name] <=55:
                 trainer.update_new_obj(filename)
 
-                x_train_slice = trainer.generate_data()
+                x_train_slice = trainer.generate_data(type_mode=TrainerAction.TRAIN)
 
                 if trainer_enum.value == TrainerEnum.CNN.value:
                     x_training_data.extend(
@@ -148,3 +148,8 @@ class ControllerClass:
     @benchmark
     def evaluate_ann_video(self, video: str) -> str:
         return self.__ann_model.evaluate_video(video)
+
+
+    @benchmark
+    def evaluate_3d_cnn_video(self, video: str) -> str:
+        return self.__3d_cnn_model.evaluate_video(video)

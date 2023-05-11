@@ -1,17 +1,15 @@
 from typing import Optional, Tuple
 from utils.constants import WIDTH_3D_CNN, HEIGHT_3D_CNN, MIN_NUMBER_OF_FRAMES_IN_3D_CNN
 from dataclasses import dataclass, field
-from utils.utils import Conv2Plus1D, ResizeVideo, add_residual_block, plot_graph
+from utils.utils import plot_graph, transform_int_into_file_name, transform_npndarray_list_to_list
 import keras
 from keras import layers
 from sklearn.model_selection import train_test_split
 import numpy as np
 import tensorflow as tf
-from time import sleep
 import cv2
-from keras.layers import Dense, Flatten, Conv3D, MaxPooling3D, Dropout, BatchNormalization
-from keras.models import Sequential
-
+from data_generators.TrainingDataGenerator3DCNN import TrainingDataGenerator3DCNN
+from helpers.enums import TrainerAction
 
 
 @dataclass(kw_only=True)
@@ -104,9 +102,31 @@ class Model3DCNN:
         print("INFO:MODEL_CNN: Training done ..")
 
 
-    def evaluate(self, test_dataset: tf.data.Dataset) -> Tuple[float, float]:
-        loss, acc = self.__model.evaluate(test_dataset)
-        return loss, acc
+    def evaluate_video(self, video: str) -> str:
+        model = self.create_model()
+        model.load_weights(self._checkpoint_path).expect_partial()
+
+        data_image = TrainingDataGenerator3DCNN(vid=video, cnn_3d_width=WIDTH_3D_CNN, cnn_3d_height=HEIGHT_3D_CNN)
+        data_image = data_image.generate_data(TrainerAction.EVALUATE)
+
+        
+
+        # new_data_image = []
+        # for idx, elem in enumerate(data_image):
+        #     if len(elem) >= MIN_NUMBER_OF_FRAMES_IN_3D_CNN:
+        #         new_data_image.append(data_image[idx])
+
+        new_x = []
+        if len(data_image) >= MIN_NUMBER_OF_FRAMES_IN_3D_CNN:
+            new_x.append(data_image[0:MIN_NUMBER_OF_FRAMES_IN_3D_CNN])
+
+        new_x = [x.reshape(MIN_NUMBER_OF_FRAMES_IN_3D_CNN, self._height_picture, self._width_picture, 1) for x in new_x]
+        new_x = np.expand_dims(new_x, axis=-1)
+
+        pred = model.predict(new_x)[0]
+        max_val = max(pred)
+        max_idx = pred.tolist().index(max_val)
+        return transform_int_into_file_name(max_idx)
 
 
     def predict(self, x: tf.Tensor) -> tf.Tensor:

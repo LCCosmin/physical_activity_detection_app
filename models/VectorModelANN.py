@@ -7,6 +7,7 @@ import numpy as np
 from utils.constants import ANN_SIZE
 from utils.utils import plot_graph, transform_initial_x_data, transform_int_into_file_name
 from data_generators.TrainingDataGeneratorANN import TrainingDataGeneratorANN
+from helpers.enums import TrainerAction
 
 
 @dataclass(kw_only=True)
@@ -85,7 +86,7 @@ class VectorModelANN:
         model.load_weights(self._checkpoint_path).expect_partial()
 
         data_image = TrainingDataGeneratorANN(vid=vid)
-        data_image = data_image.generate_data()
+        data_image = data_image.generate_data(TrainerAction.EVALUATE)
         v = []
         v.append(data_image)
 
