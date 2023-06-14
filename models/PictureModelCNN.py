@@ -3,6 +3,7 @@ from utils.constants import WIDTH_PICTURE_CNN, HEIGHT_PICTURE_CNN
 from sklearn.model_selection import train_test_split
 import tensorflow as tf
 from tensorflow import keras
+from typing import Tuple
 import numpy as np
 import cv2
 import os
@@ -86,7 +87,7 @@ class PictureModelCNN:
         print("INFO:MODEL_CNN: Training done ..")
 
 
-    def evaluate_image(self, image) -> str:
+    def evaluate_image(self, image) -> Tuple[str, list]:
         model = self.create_model()
         model.load_weights(self._checkpoint_path).expect_partial()
 
@@ -97,4 +98,4 @@ class PictureModelCNN:
         pred = model.predict(image)[0]
         max_val = max(pred)
         max_idx = pred.tolist().index(max_val)
-        return transform_int_into_file_name(max_idx)
+        return transform_int_into_file_name(max_idx), pred

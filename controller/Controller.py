@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Union
+from typing import Union, Tuple
 from data_generators.TrainingDataGeneratorANN import TrainingDataGeneratorANN
 from data_generators.TrainingDataGenerator3DCNN import TrainingDataGenerator3DCNN
 from data_generators.TrainingDataGeneratorCNN import TrainingDataGeneratorCNN
@@ -141,15 +141,15 @@ class ControllerClass:
 
     
     @benchmark
-    def evaluate_cnn_image(self, image: str) -> str:
+    def evaluate_cnn_image(self, image: str) -> Tuple[str, list]:
         return self.__cnn_model.evaluate_image(image)
 
 
     @benchmark
-    def evaluate_ann_video(self, video: str) -> str:
+    def evaluate_ann_video(self, video: str) -> Tuple[str, list]:
         return self.__ann_model.evaluate_video(video)
 
 
     @benchmark
-    def evaluate_3d_cnn_video(self, video: str) -> str:
+    def evaluate_3d_cnn_video(self, video: str) -> Tuple[str, list]:
         return self.__3d_cnn_model.evaluate_video(video)

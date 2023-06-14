@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Any
+from typing import Any, Tuple
 from sklearn.model_selection import train_test_split
 import tensorflow as tf
 from tensorflow import keras
@@ -81,7 +81,7 @@ class VectorModelANN:
 
 
     # @TODO: Must refactor this later
-    def evaluate_video(self, vid) -> None:
+    def evaluate_video(self, vid) -> Tuple[str, list]:
         model = self.create_model()
         model.load_weights(self._checkpoint_path).expect_partial()
 
@@ -96,5 +96,4 @@ class VectorModelANN:
         pred = model.predict(data_image)[0]
         max_val = max(pred)
         max_idx = pred.tolist().index(max_val)
-        return transform_int_into_file_name(max_idx)
-
+        return transform_int_into_file_name(max_idx), pred

@@ -1,12 +1,7 @@
 from controller.Controller import ControllerClass
-from utils.utils import transform_initial_x_data, cut_too_short_training_data, cut_too_long_training_data, create_graph_classes
-import cv2
-import os
 from utils.constants import (
     WIDTH_3D_CNN,
     HEIGHT_3D_CNN, 
-    ANN_SIZE, 
-    MIN_NUMBER_OF_FRAMES_IN_3D_CNN, 
     WIDTH_PICTURE_CNN, 
     HEIGHT_PICTURE_CNN,
     DETECTION_CONFIDENCE_ANN,
@@ -14,11 +9,12 @@ from utils.constants import (
     COMPLEXITY_ANN,
 )
 from helpers.helpers import TrainerANNData, Trainer3DCNNData, TrainerCNNData
-from helpers.enums import TrainerEnum
-import numpy as np
+from PyQt5 import QtCore, QtGui, QtWidgets
+from UI.main_window import Ui_MainWindow
+import sys
 
 
-def main():
+def main_test():
     trainer_ann_data = TrainerANNData(
         detection_confidece=DETECTION_CONFIDENCE_ANN,
         tracking_confidence=TRACKING_CONFIDENCE_ANN,
@@ -113,71 +109,15 @@ def main():
     print(f"Predict result (SHOULDER) for 3D CNN is: {controller.evaluate_cnn_image('/home/cosmin/Desktop/licenta/x/physical_activity_detection_app/predict_data/seen_shoulder.png')}")
     print(f"Predict result (FOREARM) for 3D CNN is: {controller.evaluate_cnn_image('/home/cosmin/Desktop/licenta/x/physical_activity_detection_app/predict_data/seen_forearm.png')}")
 
-    
-# from time import sleep
 
-# def test_video():
-#     vid = f"{os.getcwd()}/training data/abs_1.mp4"
-    
-#     vid = cv2.VideoCapture(vid)
-#     while vid.isOpened():
-#         suc, img = vid.read()
-        
-#         if suc == False:
-#             break
+def main():
+    app = QtWidgets.QApplication(sys.argv)
+    MainWindow = QtWidgets.QMainWindow()
+    ui = Ui_MainWindow()
+    ui.setupUi(MainWindow)
+    MainWindow.show()
+    sys.exit(app.exec_())
 
-#         img = img.tolist()
-#         print(f"suc: {type(suc)}")
-#         print(f"img: {type(img)}")
 
-#         cv2.imshow("d", img)
-#         cv2.waitKey(0)
-        
-#     print(os.getcwd())
-#     vid.release()
-#     cv2.destroyAllWindows()
-
-# def reverse_videos():
-#     total_files = len([f for f in os.listdir("C:\\Users\\Cosmin\\Desktop\\licenta\\training data") if f.endswith("mp4")])
-#     # Iterate over files of given type in input directory
-#     for c, filename in enumerate([f for f in os.listdir("C:\\Users\\Cosmin\\Desktop\\licenta\\training data") if
-#                                 f.endswith("mp4")]):
-#         print("Processing file '%s' (%s of %s)." % (filename, c+1,
-#             total_files))
-#         video = cv2.VideoCapture("C:\\Users\\Cosmin\\Desktop\\licenta\\training data\\" + filename)
-#         # Gather info about input video
-#         fps = int(video.get(cv2.CAP_PROP_FPS))
-#         width = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
-#         height = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
-
-#         # Define the codec and create VideoWriter object for output
-#         fourcc = cv2.VideoWriter_fourcc(*"mp4v")
-#         fn, ext = os.path.splitext(os.path.basename(filename))
-#         out = cv2.VideoWriter("%s/%s_%s%s" % ("C:\\Users\\Cosmin\\Desktop\\licenta\\rev", fn, "rev_", ext),
-#                             fourcc, fps, (width, height))
-
-#         # Flip video frame by frame and write to output file
-#         while(video.isOpened()):
-#             ret, frame = video.read()
-#             if ret:
-#                 frame = cv2.flip(frame, 1)
-#                 out.write(frame)
-#             else:
-#                 break
-
-#     video.release()
-#     out.release()
-    
-# def rename_files():
-#     START = "chest_"
-#     # Iterate over files of given type in input directory
-#     for c, filename in enumerate([f for f in os.listdir("C:\\Users\\Cosmin\\Desktop\\licenta\\training data") if
-#                                 f.endswith("mp4")]):
-#         new_file = START + str(c+1) + ".mp4"
-#         os.rename("C:\\Users\\Cosmin\\Desktop\\licenta\\training data\\" + filename, "C:\\Users\\Cosmin\\Desktop\\licenta\\renamed-files\\" + new_file)
-    
 if __name__ == "__main__":
-    #rename_files()
-    #reverse_videos()
     main()
-    # test_video()

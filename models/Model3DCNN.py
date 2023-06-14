@@ -102,7 +102,7 @@ class Model3DCNN:
         print("INFO:MODEL_CNN: Training done ..")
 
 
-    def evaluate_video(self, video: str) -> str:
+    def evaluate_video(self, video: str) -> Tuple[str, list]:
         model = self.create_model()
         model.load_weights(self._checkpoint_path).expect_partial()
 
@@ -126,7 +126,7 @@ class Model3DCNN:
         pred = model.predict(new_x)[0]
         max_val = max(pred)
         max_idx = pred.tolist().index(max_val)
-        return transform_int_into_file_name(max_idx)
+        return transform_int_into_file_name(max_idx), pred
 
 
     def predict(self, x: tf.Tensor) -> tf.Tensor:
