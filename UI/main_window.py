@@ -13,6 +13,7 @@ from utils.constants import (
     COMPLEXITY_ANN,
 )
 from math import floor
+import cv2
 
 
 class Ui_MainWindow(object):
@@ -54,7 +55,7 @@ class Ui_MainWindow(object):
         self.cnn_result = QtWidgets.QTextBrowser(self.centralwidget)
         self.cnn_result.setGeometry(QtCore.QRect(190, 420, 221, 41))
         self.cnn_result.setObjectName("cnn_result")
-        self.openGLWidget = QtWidgets.QOpenGLWidget(self.centralwidget)
+        self.openGLWidget = QtWidgets.QLabel(self.centralwidget)
         self.openGLWidget.setGeometry(QtCore.QRect(420, 360, 421, 221))
         self.openGLWidget.setObjectName("openGLWidget")
         self.textBrowser_9 = QtWidgets.QTextBrowser(self.centralwidget)
@@ -146,9 +147,39 @@ class Ui_MainWindow(object):
                     case "TRICEPS":
                         link_video = "https://www.youtube.com/watch?v=SuajkDYlIRw&ab_channel=VShred"    
                 self.final_message.setText(f"{base_message} {link_video} ")
+
+
+            image = cv2.imread(file_path)
+            image = cv2.resize(image, (421, 221))
+            cv2.imwrite("./img/image.png", image)
+            image = QtGui.QPixmap("./img/image.png")
+            self.openGLWidget.setPixmap(image)
         else:
             controller_ann_str, controller_ann_list = self.controller.evaluate_ann_video(file_path)
             controller_3d_cnn_str, controller_3d_cnn_list = self.controller.evaluate_3d_cnn_video(file_path)
+
+            cap = cv2.VideoCapture(file_path)
+            count = 0
+
+            image = ""
+            while cap.isOpened():
+                ret, frame = cap.read()
+
+                if ret:
+                    if count == 100:
+                        image = frame
+                        cap.release()
+                        break
+                    else:
+                        count += 1
+                else:
+                    cap.release()
+                    break
+            
+            image = cv2.resize(image, (421, 221))
+            cv2.imwrite("./img/image.png", image)
+            image = QtGui.QPixmap("./img/image.png")
+            self.openGLWidget.setPixmap(image)
 
             max_val_ann = max(controller_ann_list)
             max_val_ann = max_val_ann * (-1) if max_val_ann  < 0 else max_val_ann
